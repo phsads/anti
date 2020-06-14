@@ -11,3 +11,5 @@ cost: 25k matter (x1.3 everytime)
 generates d matter/sec
 d = mg3^1.4 * 1500
 mg4: unlocks after the 3rd mg3
+generates e mg2/s
+e = (mg4 / 3.5 ) ^ 0.75
