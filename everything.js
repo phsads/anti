@@ -1,5 +1,6 @@
-//Code snippets and templates from Decimal.js
 // i dont know anything about global functions or something so i made all the code in 1 place
+//Credits (in the weirdest place as possible):
+//Naruyoko for ExpantaNum.js ( the thing from line 5 to line 1777 )
 
 ;(function (globalScope) {
   "use strict";
@@ -14,7 +15,7 @@
       // 1000 means there are at maximum of 1000 elements in array.
       // It is not recommended to make this number too big.
       // `ExpantaNum.maxOps = 1000;`
-      maxOps: 1e3,
+      maxOps: 1300,
 
       // Specify what format is used when serializing for JSON.stringify
       // 
