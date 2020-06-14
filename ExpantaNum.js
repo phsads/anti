@@ -1,4 +1,5 @@
 //Code snippets and templates from Decimal.js
+// i dont know anything about global functions or something so i made all the code in 1 place
 
 ;(function (globalScope) {
   "use strict";
