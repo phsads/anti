@@ -1775,3 +1775,40 @@
     globalScope.ExpantaNum = ExpantaNum;
   }
 })(this);
+let N = a => ExpantaNum(a)
+//ty reinhardt-c
+//GAME START
+game = {
+  mg1: {
+    cost: N(10),
+    power: N(1),
+    amn: N(0)
+  },
+  mg2: {
+    cost: N(500),
+    power: N(1),
+    amn: N(0)
+  },
+  mg3: {
+    cost: N(25000),
+    power: N(1),
+    amn: N(0)
+  },
+  mg4: {
+    cost: N(100),
+    power: N(1),
+    amn: N(0)
+  },
+  matter: N(0)
+}
+function generate() {
+  game.matter = game.matter.add(getMPS())
+  game.mg1.amn = game.mg1.amn.add(game.mg2.amn.div(6).pow(0.8))
+  game.mg2.amn = game.mg2.amn.add(game.mg4.amn.div(4).pow(0.73))
+}
+function getMPS() {
+  var a = game.mg1.amn.pow(1.2)
+  var b = game.mg2.amn.pow(1.22).mul(15)
+  return a.add(b)
+}
+    
