@@ -9,6 +9,9 @@
 
 @font-face {
     font-family: Typewriter;
-    src: url('css/MonospaceTypewriter.ttf');
+    src: url('MonospaceTypewriter.ttf');
+}
+* {
+    font-family:Typewriter
 }
 
