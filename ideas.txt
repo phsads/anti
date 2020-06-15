@@ -1,15 +1,16 @@
-matter generators:
+matter generators: every 10 mgs, the mg power will be multiplied by 1.5x
 mg1: gives a matter / sec ( cost: 10 matter and +2 everytime until the 50th ( then x1.02 ) )
 a = mg1^1.2 ( 1e5 mg1 = 1e6 matter/sec )
 mg2: unlocks after the 60th mg1
 cost: 500 matter ( +150 everytime until the 45th ( then x1.04 ) )
 generates b mg1 and c matter/sec
-b = ( mg2 / 5 ) ^ 0.8
+b = ( mg2 / 6 ) ^ 0.8
 c = mg2^1.22 * 15
 mg3: unlocks after 50k matter
 cost: 25k matter (x1.3 everytime)
 generates d matter/sec
 d = mg3^1.4 * 1500
 mg4: unlocks after the 3rd mg3
+cost: 100 mg1 ( +20 everytime until the 14th, x1.08 after )
 generates e mg2/s
-e = (mg4 / 3.5 ) ^ 0.75
+e = (mg4 / 4 ) ^ 0.73
