@@ -15,7 +15,7 @@
       // 1000 means there are at maximum of 1000 elements in array.
       // It is not recommended to make this number too big.
       // `ExpantaNum.maxOps = 1000;`
-      maxOps: 1300,
+      maxOps: 1e4,
 
       // Specify what format is used when serializing for JSON.stringify
       // 
@@ -1776,39 +1776,241 @@
   }
 })(this);
 let N = a => ExpantaNum(a)
-//ty reinhardt-c
-//GAME START
-game = {
-  mg1: {
-    cost: N(10),
-    power: N(1),
-    amn: N(0)
-  },
-  mg2: {
-    cost: N(500),
-    power: N(1),
-    amn: N(0)
-  },
-  mg3: {
-    cost: N(25000),
-    power: N(1),
-    amn: N(0)
-  },
-  mg4: {
-    cost: N(100),
-    power: N(1),
-    amn: N(0)
-  },
-  matter: N(0)
+class Game {
+  constructor( d={} ) {
+    this.matter = N(d.matter || 10)
+    this.mg1c = N(d.mg1c || 10)
+    this.mg1p = N(d.mg1p || 1)
+    this.mg1a = N(d.mg1a || 0)
+    this.mg1b = N(d.mg1b || 0)
+    this.mg2c = N(d.mg2c || 500)
+    this.mg3c = N(d.mg3c || 25000)
+    this.mg4c = N(d.mg4c || 200)
+    this.mg2a = N(d.mg2a || 0)
+    this.mg3a = N(d.mg3a || 0)
+    this.mg4a = N(d.mg4a || 0)
+    this.mg2b = N(d.mg2b || 0)
+    this.mg3b = N(d.mg3b || 0)
+    this.mg4b = N(d.mg4b || 0)
+    this.mg2p = N(d.mg2p || 1)
+    this.mg3p = N(d.mg3p || 1)
+    this.mg4p = N(d.mg4p || 1)
+    this.mg2u = d.mg2u || false
+    this.mg3u = d.mg3u || false
+    this.mg4u = d.mg4u || false
+    // pre mf ^
+    this.mfu = d.mfu || false
+    this.mft = N(d.mft || 0)
+    this.atoms = N(d.atoms || 0)
+    this.timf = N(d.timf || 0)
+    this.per10 = N(d.per10 || 1.5)
+    this.mg5u = d.mg5u || false
+    this.mg5b = N(d.mg5b || 0)
+    this.mg5c = N(d.mg5c || 1e13)
+    this.mg5b = N(d.mg5b || 0)
+  }
 }
-function generate() {
-  game.matter = game.matter.add(getMPS())
-  game.mg1.amn = game.mg1.amn.add(game.mg2.amn.div(6).pow(0.8))
-  game.mg2.amn = game.mg2.amn.add(game.mg4.amn.div(4).pow(0.73))
+function gTT(a) {
+  switch (a) {
+    case 1:
+      document.getElementById("mgs").hidden = false
+      document.getElementById("mftab").hidden = true
+      document.getElementById("sett").hidden = true
+      break;
+    case 2:
+      document.getElementById("mgs").hidden = true
+      document.getElementById("mftab").hidden = false
+      document.getElementById("sett").hidden = true
+      break;
+    case 3:
+      document.getElementById("mgs").hidden = true
+      document.getElementById("mftab").hidden = true
+      document.getElementById("sett").hidden = false
+      break;
+  }
+}
+//ty reinhardt-c x2
+//GAME START
+function save() {
+let m = JSON.stringify(game)
+localStorage.setItem("save",m)
+}
+function load(sv) {
+  let s = sv || localStorage.getItem("save")
+  if (s != null && s != "undefined") {
+    s = JSON.parse(s)
+    game = new Game(s)
+    return true
+  } else {
+  return false
+  }
+}
+function getAOR() {
+  return N(7).pow(game.matter.logBase(17.9).div(150))
+}
+var sa = setInterval(save,700)
+var game
+if (!load()) {
+  game = new Game()
 }
 function getMPS() {
-  var a = game.mg1.amn.pow(1.2)
-  var b = game.mg2.amn.pow(1.22).mul(15)
-  return a.add(b)
+  var a = game.mg1a.pow(1.2).mul(game.mg1p)
+  var b = game.mg2a.pow(1.22).mul(15).mul(game.mg2p)
+  var c = game.mg3a.pow(0.73).mul(1500).mul(game.mg3p)
+  return a.add(b).add(c)
 }
-    
+function generate() {
+  game.matter = game.matter.add(getMPS().div(20))
+  game.mg1a = game.mg1a.add(((game.mg2a.div(6).pow(0.8)).div(20)).mul(game.mg2p))
+  game.mg2a = game.mg2a.add(((game.mg4a.div(4).pow(0.73)).div(20)).mul(game.mg3p))
+}
+function fix(a) {
+  if (a.gte(1e100)) {
+    return a.toFixed(2)
+  } else {
+    return a.toFixed(2)
+  }
+}
+function mf() {
+  if (game.mfu) {
+    game.atoms.add(getAOR())
+    game.matter = N(10)
+    game.mg1a = N(0)
+    game.mg2a = N(0)
+    game.mg3a = N(0)
+    game.mg4a = N(0)
+    game.mg5a = N(0)
+    game.mg1c = N(10)
+    game.mg2c = N(500)
+    game.mg3c = N(25000)
+    game.mg4c = N(200)
+    game.mg5c = N(1e13)
+    game.mg1b = N(0)
+    game.mg2b = N(0)
+    game.mg3b = N(0)
+    game.mg4b = N(0)
+    game.mg5b = N(0)
+    game.mg1p = N(1)
+    game.mg2p = N(1)
+    game.mg3p = N(1)
+    game.mg4p = N(1)
+    game.mg5p = N(1)
+    game.mg2u = false
+    game.mg3u = false
+    game.mg4u = false
+    game.mg5u = false
+  }
+}
+//the reason why i did this is complicated
+function update() {
+  generate()
+  document.getElementById("mg1a").textContent = "Amount: " + fix(game.mg1a)
+  document.getElementById("mg1p").textContent = "Production: " + fix(game.mg1a.pow(1.2).mul(game.mg1p)) + " matter / sec"
+  document.getElementById("mg2a").textContent = "Amount: " + fix(game.mg2a)
+  document.getElementById("mg2p").innerHTML = "Production: " + fix(game.mg2a.pow(1.22).mul(15).mul(game.mg2p)) + " matter / sec <br> Production: " + fix(game.mg2a.div(6).pow(0.8).mul(game.mg2p)) + " mg1 / sec"
+  document.getElementById("mg3a").textContent = "Amount: " + fix(game.mg3a)
+  document.getElementById("mg3p").textContent = "Production: " + fix(game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)) + " matter / sec"
+  document.getElementById("mg4a").textContent = "Amount: " + fix(game.mg4a)
+  document.getElementById("mg4p").textContent = "Production: " + fix((game.mg4a.div(4)).pow(0.73).mul(game.mg4p)) + " mg2 / sec"
+  document.getElementById("man").textContent = fix(game.matter)
+  document.getElementById("b1").textContent = "Buy one for " + fix(game.mg1c) + " matter"
+  document.getElementById("b2").textContent = "Buy one for " + fix(game.mg2c) + " matter"
+  document.getElementById("b3").textContent = "Buy one for " + fix(game.mg3c) + " matter"
+  document.getElementById("b4").textContent = "Buy one for " + fix(game.mg4c) + " mg1"
+  document.getElementById("mfb").innerHTML = "Matter Fusion <br> Gain " + fix(getAOR()) + " Atoms <br> " + fix(getAOR().div(game.timf).mul(3000)) + " Atoms / minute"
+  game.timf = game.timf.add(1)
+  if (game.matter.gte(game.mg1c)) {
+    document.getElementById("b1").className = "av bb"
+  } else {
+    document.getElementById("b1").className = "uav bb"
+  }
+  if (game.matter.gte(game.mg2c)) {
+    document.getElementById("b2").className = "av bb"
+  } else {
+    document.getElementById("b2").className = "uav bb"
+  }
+  if (game.matter.gte(game.mg3c)) {
+    document.getElementById("b3").className = "av bb"
+  } else {
+    document.getElementById("b3").className = "uav bb"
+  }
+  if (game.mg1a.gte(game.mg4c)) {
+    document.getElementById("b4").className = "av bb"
+  } else {
+    document.getElementById("b4").className = "uav bb"
+  }
+  unlock()
+  document.getElementById("mg2").hidden = !game.mg2u
+  document.getElementById("mg3").hidden = !game.mg3u
+  document.getElementById("mg4").hidden = !game.mg4u
+  document.getElementById("mfb").hidden = !game.mfu
+}
+function unlock() {
+  if (!game.mg2u) {
+  game.mg2u = game.mg1a.gte(60)
+  }
+  if (!game.mg3u) {
+  game.mg3u = game.matter.gte(50000)
+  }
+  if (!game.mg4u) {
+    game.mg4u = game.mg3a.gte(3)
+  }
+  if (game.mft.lt(1)) {
+    game.mfu = game.matter.gte(1e12)
+  } else if (game.matter.gte(1e12)) {
+    game.mfu = true
+  }
+}
+var test2 = setInterval(update,50)
+function buyMG(type) {
+  switch(type) {
+     case 1:
+       if (game.matter.gte(game.mg1c)) {
+         game.mg1a = game.mg1a.add(1)
+         game.mg1b = game.mg1b.add(1)
+         game.mg1p = game.per10.pow((game.mg1b.div(10)).floor())
+         game.matter = game.matter.sub(game.mg1c)
+         if (game.mg1b.lt(50)) {
+           game.mg1c = game.mg1c.add(3)
+         } else {
+           game.mg1c = game.mg1c.mul(1.2)
+         }
+       }
+       break;
+       case 2:
+       if (game.matter.gte(game.mg2c)) {
+         game.mg2a = game.mg2a.add(1)
+         game.mg2b = game.mg2b.add(1)
+         game.mg2p = game.per10.pow((game.mg2b.div(10)).floor())
+         game.matter = game.matter.sub(game.mg2c)
+         if (game.mg2b.lt(45)) {
+           game.mg2c = game.mg2c.add(150)
+         } else {
+           game.mg2c = game.mg2c.mul(1.3)
+         }
+       }
+       break;
+       case 3:
+       if (game.matter.gte(game.mg3c)) {
+         game.mg3a = game.mg3a.add(1)
+         game.mg3b = game.mg3b.add(1)
+         game.mg3p = game.per10.pow((game.mg3b.div(10)).floor())
+         game.matter = game.matter.sub(game.mg3c)
+         game.mg3c = game.mg3c.mul(1.5)
+       }
+       break;
+       case 4:
+       if (game.mg1a.gte(game.mg4c)) {
+         game.mg4a = game.mg4a.add(1)
+         game.mg4b = game.mg4b.add(1)
+         game.mg4p = game.per10.pow((game.mg4b.div(10)).floor())
+         game.mg1a = game.mg1a.sub(game.mg4c)
+         if (game.mg4b.lt(14)) {
+           game.mg4c = game.mg4c.add(70)
+         } else {
+           game.mg4c = game.mg4c.mul(1.25)
+         }
+       }
+       break;
+  }
+}
