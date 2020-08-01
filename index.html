@@ -7,7 +7,77 @@
 </head>
 <body>
     <div>
-      <button class="MGbutton">Matter Generators</button>
+      <button class="simpbutt" onclick="gTT(1)">Matter Generators</button>
+      <button class="simpbutt" onclick="gTT(2)" id="mftb">Matter Fusion</button>
+      <button class="simpbutt" onclick="gTT(3)">Settings</button>
+    </div>
+    <div id="mgs" hidden="true">
+    <p id="mat" style="font-size:40px; text-align:center">You have <span id="man" class="man">10</span> matter.</p>
+
+    <hr>
+    <button class="mf" id="mfb" onclick="mf()">Matter Fusion</button>
+    <br>
+    <br>
+    <br>
+    <br>
+      <table>
+        <tr>
+          <td>
+      <ul>
+        <li>Matter Generator 1</li>
+        <li id="mg1a">Amount: something</li>
+        <li id="mg1p">Production: # matter / sec</li>
+        <li>
+          <button onclick="buyMG(1)" class="bb" id="b1">Buy one for 10 matter</button>
+        </li>
+      </ul>
+    </td>
+    <td id="mg2">
+      <ul>
+        <li>Matter Generator 2</li>
+        <li id="mg2a">Amount: #</li>
+        <li id="mg2p">Production: # mg1 / sec <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # matter / sec</li>
+        <li>
+          <button onclick="buyMG(2)" class="bb" id="b2">Buy one for 500 matter</button>
+        </li>
+      </ul>
+      </td>
+    </tr>
+            <tr>
+          <td id="mg3">
+      <ul>
+        <li>Matter Generator 3</li>
+        <li id="mg3a">Amount: something</li>
+        <li id="mg3p">Production: # matter / sec</li>
+        <li>
+          <button onclick="buyMG(3)" class="bb" id="b3">Buy one for 25000 matter</button>
+        </li>
+      </ul>
+    </td>
+    <td id="mg4">
+      <ul>
+        <li>Matter Generator 4</li>
+        <li id="mg4a">Amount: #</li>
+        <li id="mg4p">Production: # mg2 / sec</li>
+        <li>
+          <button onclick="buyMG(4)" class="bb" id="b4">Buy one for 200 mg1</button>
+        </li>
+      </ul>
+      </td>
+    </tr>
+      </table>
+    </div>
+    <div id="mftab">
+      <table style="margin: 0 auto; border-spacing:0">
+        <tr>
+          <td>
+            <button id="u1" class="simpbutt ub">Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (#x) <br> Cost: 1 matter</button>
+          </td>
+          <td>
+            <button id="u2" class="simpbutt ub">Increase the per10 multipiler by 0.05 (x1.5 -> x1.55) <br> Cost: 2 matter</button>
+          </td>
+        </tr>
+      </table>
     </div>
 </body>
 <script src="everything.js"></script>
