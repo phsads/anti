@@ -1,4 +1,5 @@
-/* copied from AD ( https://github.com/IvarK/IvarK.github.io/blob/master/stylesheets/styles.css ) */
+/* copied from AD (https://github.com/IvarK/IvarK.github.io/blob/master/stylesheets/styles.css) */
+/* dont wanna get copyrighted and get oblitirated */
 @font-face {
     font-family: 'Open Sans Condensed';
     font-style: normal;
@@ -12,6 +13,81 @@
     src: url('MonospaceTypewriter.ttf');
 }
 * {
-    font-family:Typewriter
+    font-family:Typewriter;
+    font-size:20px;
+}
+.simpbutt {
+    border-width: 5px;
+    border: 2px solid #4980cc;
+    background-color: #e0e0e0;
+    border-radius:4px;
+    font-weight: 600;
+    transition:0.2s
+}
+.simpbutt:hover {
+  background-color: #4980cc;
+  color: #ffffff
+}
+button {
+    padding: 1px 6px;
+    outline: none
+}
+ul {
+  display: block;
+  list-style-type: none;
+  margin-top: 1em;
+  margin-bottom: 1 em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+hr {
+    border:1.5px solid
+}
+.man {
+    font-weight: bold;
+    font-size: 50px
+}
+.bb {
+    border-radius: 3.1px;
+    background:#f2f2f2;
+    transition: 0.2s;
+}
+.mf {
+    left: 50%;
+    -ms-transform:translateX(-50%);
+    transform: translateX(-50%);
+    margin: 0;
+    position: absolute;
+    width:300px;
+    height:120px;
+}
+.av {
+    border: 2px solid #127a20;
+}
+.av:hover {
+    background: limegreen;
+    border: 2px solid #127a20;
+}
+.uav {
+    border: 2px solid #b84b5f;
+}
+.uav:hover {
+    background: #b84b5f;
+    border: 2px solid #b84b5f;
+}
+.mf {
+    border: 2px solid #4980cc;
+    border-radius:5px;
+    transition: 0.2s;
+    font-weight:bold;
+}
+.mf:hover {
+    background-color: #4980cc;
+    color: #ffffff
+}
+.ub {
+    width:30%;
+    height:190px
 }
 
