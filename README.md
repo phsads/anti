@@ -1,7 +1,7 @@
 # anti
-something, yes something\
-# NOTE: Some of the version are reports of my progress on the game, most of the actual releases is the x.y versions and not x.y.z\
-Patchnotes:\
+something, yes something
+# Patchnotes:
+NOTE: Some of the version are reports of my progress on the game, most of the actual releases is the x.y versions and not x.y.z\
 Alpha:\
 v1.0a: Creation\
 v1.1a: Matter Generators 1-4 are added\
