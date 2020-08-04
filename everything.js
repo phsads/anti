@@ -1,7 +1,3 @@
-// i dont know anything about global functions or something so i made all the code in 1 place
-//Credits (in the weirdest place as possible):
-//Naruyoko for ExpantaNum.js ( the thing from line 5 to line 1777 )
-
 ;(function (globalScope) {
   "use strict";
 
@@ -1899,6 +1895,8 @@ function mf() {
     game.mg3u = false
     game.mg4u = false
     game.mg5u = false
+    game.mft = game.mft.add(1)
+    game.mfu = false
   }
 }
 //the reason why i did this is complicated
@@ -1919,6 +1917,7 @@ function update() {
   document.getElementById("b4").textContent = "Buy one for " + fix(game.mg4c) + " mg1"
   document.getElementById("mfb").innerHTML = "Matter Fusion <br> Gain " + fix(getAOR()) + " Atoms <br> " + fix(getAOR().div(game.timf).mul(3000)) + " Atoms / minute"
   game.timf = game.timf.add(1)
+  document.getElementById("t")
   if (game.matter.gte(game.mg1c)) {
     document.getElementById("b1").className = "av bb"
   } else {
@@ -1959,6 +1958,9 @@ function unlock() {
     game.mfu = game.matter.gte(1e12)
   } else if (game.matter.gte(1e12)) {
     game.mfu = true
+  }
+  if (game.mft.gte(1)) {
+    document.getElementById("mftb").hidden = false
   }
 }
 var test2 = setInterval(update,50)
@@ -2012,5 +2014,57 @@ function buyMG(type) {
          }
        }
        break;
+  }
+}
+function isport() {
+  load(prompt("Please enter your save.",""))
+}
+function esport() {
+  prompt("Your save is:",localStorage.getItem("save"))
+}
+function changec() {
+  var clor = prompt("New background color in RGB-Hex (ex: #7B5AD5): (Will reset after a refresh)","")
+  document.getElementById("body").style = "background-color: " + clor
+}
+var rv = Math.round(Math.random() * 255)
+var gv = Math.round(Math.random() * 255)
+var bv = Math.round(Math.random() * 255)
+let intv
+var intvon = false
+function swapunr() {
+  if (intvon === true) {
+    clearInterval(intv)
+    intvon = false
+    document.getElementById("body").style = "background-color: #FFFFFF"
+  } else {
+    rv = Math.round(Math.random() * 255)
+    gv = Math.round(Math.random() * 255)
+    bv = Math.round(Math.random() * 255)
+    intv = setInterval(clorr,1)
+    intvon = true
+  }
+}
+function clorr() {
+  document.getElementById("body").style = "background-color:rgb(" + rv + "," + gv + "," + bv + ")"
+  if (rv <= 1) {
+    rv = rv + 5
+  } else if (rv >= 254) {
+    rv = rv - 5
+  } else {
+    rv = rv + Math.round(Math.random() * 6 - 3)
+  }
+  if (gv <= 1) {
+    gv = gv + 5
+  } else if (gv >= 254) {
+    gv = gv - 5
+  } else {
+    gv = gv + Math.round(Math.random() * 6 - 3)
+  }
+  if (bv <= 1) {
+    bv = bv + 5
+  } else if (bv >= 254) {
+    bv = bv - 5
+  } else {
+    bv = bv + Math.round(Math.random() * 6 - 3)
   }
 }
