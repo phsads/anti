@@ -5,15 +5,14 @@
     <title>Matter Creator</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
-<body>
+<body id="body">
     <div>
       <button class="simpbutt" onclick="gTT(1)">Matter Generators</button>
-      <button class="simpbutt" onclick="gTT(2)" id="mftb">Matter Fusion</button>
+      <button class="simpbutt" onclick="gTT(2)" id="mftb" hidden="true">Matter Fusion</button>
       <button class="simpbutt" onclick="gTT(3)">Settings</button>
     </div>
-    <div id="mgs" hidden="true">
+    <div id="mgs">
     <p id="mat" style="font-size:40px; text-align:center">You have <span id="man" class="man">10</span> matter.</p>
-
     <hr>
     <button class="mf" id="mfb" onclick="mf()">Matter Fusion</button>
     <br>
@@ -40,7 +39,7 @@
         <li>
           <button onclick="buyMG(2)" class="bb" id="b2">Buy one for 500 matter</button>
         </li>
-      </ul>
+      </ul> 
       </td>
     </tr>
             <tr>
@@ -67,8 +66,11 @@
     </tr>
       </table>
     </div>
-    <div id="mftab">
-      <table style="margin: 0 auto; border-spacing:0">
+    <div id="mftab" hidden=true>
+      <br>
+      <div style="text-align: center; font-size:25px;">You have <span id="atm" style="font-size:30px;font-weight: bold;">0</span> atoms</div>
+      <br>
+      <table style="margin: 0 auto; border-spacing:0; padding:0; border-width:0">
         <tr>
           <td>
             <button id="u1" class="simpbutt ub">Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (#x) <br> Cost: 1 matter</button>
@@ -76,8 +78,24 @@
           <td>
             <button id="u2" class="simpbutt ub">Increase the per10 multipiler by 0.05 (x1.5 -> x1.55) <br> Cost: 2 matter</button>
           </td>
+          <td>
+            <button id="u3" class="simpbutt ub"></button>
+          </td>
+          <td>
+            <button id="u4" class="simpbutt ub"></button>
+          </td>
+          <td>
+            <button id="u5" class="simpbutt ub"></button>
+          </td>
         </tr>
       </table>
+    </div>
+    <br>
+    <div id="sett" hidden=true>
+      <button class="simpbutt" onclick="isport()">Import</button>
+      <button class="simpbutt" onclick="esport()">Export</button>
+      <button class="simpbutt" onclick="changec()">Change background color</button>
+      <button class="simpbutt" onclick="swapunr()">Turn on/off unstable rainbow background</button>
     </div>
 </body>
 <script src="everything.js"></script>
