@@ -2011,7 +2011,7 @@ function update() {
   game.timf = game.timf.add(1)
   game.mg1p = game.per10.pow((game.mg1b.div(10)).floor()).mul(game.mg5boost)
   game.mg2p = game.per10.pow((game.mg2b.div(10)).floor())
-  document.getElementById("u1").innerHTML = "Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (" + fix(game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2)) + "x) <br> Cost: 1 matter"
+  document.getElementById("u1").innerHTML = "Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (" + fix(game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2)) + "x) <br> Cost: 1 atoms"
   if (game.upgrades.u1) {
     game.mg3p = game.per10.pow((game.mg3b.div(10)).floor()).mul((game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2)))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2))
   } else {
