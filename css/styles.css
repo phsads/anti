@@ -61,33 +61,39 @@ hr {
     position: absolute;
     width:300px;
     height:120px;
-}
-.av {
-    border: 2px solid #127a20;
-}
-.av:hover {
-    background: limegreen;
-    border: 2px solid #127a20;
-}
-.uav {
-    border: 2px solid #b84b5f;
-}
-.uav:hover {
-    background: #b84b5f;
-    border: 2px solid #b84b5f;
-}
-.mf {
     border: 2px solid #4980cc;
     border-radius:5px;
     transition: 0.2s;
     font-weight:bold;
+}
+.av {
+    border: 2px solid #127a20;
+}
+.ubo {
+    background: #5ac467;
+    border: 2px solid #127a20;
+}
+.av:hover {
+    background: #5ac467;
+    border: 2px solid #127a20;
+}
+.uav {
+    border: 2px solid #b84b5f;
+    background-color: #a3a3a3
+}
+.uav:hover {
+    background: #b84b5f;
+    border: 2px solid #b84b5f;
 }
 .mf:hover {
     background-color: #4980cc;
     color: #ffffff
 }
 .ub {
-    width:30%;
-    height:190px
+    width:190px;
+    height:90px;
+    font-size:12px;
+    font-weight:bold;
+    border-radius:4px;
+    transition: 0.2s
 }
-
