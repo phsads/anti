@@ -2122,7 +2122,7 @@ function unlock() {
   if (game.mft.gte(1)) {
     document.getElementById("mftb").hidden = false
   }
-  if (game.settings.mfwu) {
+  if (game.settings.!mfwu) {
     game.settings.mfwu = game.mfu
   }
 }
