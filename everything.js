@@ -1,3 +1,7 @@
+// i dont know anything about global functions or something so i made all the code in 1 place
+//Credits (in the weirdest place as possible):
+//Naruyoko for ExpantaNum.js ( the thing from line 5 to line 1777 )
+
 ;(function (globalScope) {
   "use strict";
 
@@ -1801,9 +1805,40 @@ class Game {
     this.timf = N(d.timf || 0)
     this.per10 = N(d.per10 || 1.5)
     this.mg5u = d.mg5u || false
-    this.mg5b = N(d.mg5b || 0)
+    this.mg5a = N(d.mg5a || 0)
     this.mg5c = N(d.mg5c || 1e13)
     this.mg5b = N(d.mg5b || 0)
+    this.mg5boost = N(d.mg5boost || 1)
+    this.mg5p = N(d.mg5p || 1)
+    this.settings = d.settings || {
+        mfw: true,
+        mfwu: false,
+        notationstate: 0
+      }
+    this.upgrades = d.upgrades || {
+      u1: false,
+      u2: false,
+      u3: false,
+      u4: false,
+      u5: false,
+      bought: N(0)
+    }
+  }
+}
+var notationsamount = 2
+function changenotation() {
+  if (game.settings.notationstate === notationsamount-1) {
+    game.settings.notationstate = 0
+    document.getElementById("notationbutton").textContent = "Notation: Scientific"
+  } else {
+    game.settings.notationstate++
+    document.getElementById("notationbutton").textContent = "Notation: Cancer"
+  }
+}
+function clearsave() {
+  if(confirm("Are you sure you want to wipe your save?")) {
+    localStorage.removeItem("save")
+    alert("Refresh this page.")
   }
 }
 function gTT(a) {
@@ -1852,52 +1887,105 @@ if (!load()) {
 function getMPS() {
   var a = game.mg1a.pow(1.2).mul(game.mg1p)
   var b = game.mg2a.pow(1.22).mul(15).mul(game.mg2p)
-  var c = game.mg3a.pow(0.73).mul(1500).mul(game.mg3p)
-  return a.add(b).add(c)
+  var c = game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)
+  var d = N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4))
+  return a.add(b).add(c).add(d)
 }
 function generate() {
   game.matter = game.matter.add(getMPS().div(20))
   game.mg1a = game.mg1a.add(((game.mg2a.div(6).pow(0.8)).div(20)).mul(game.mg2p))
-  game.mg2a = game.mg2a.add(((game.mg4a.div(4).pow(0.73)).div(20)).mul(game.mg3p))
+  game.mg2a = game.mg2a.add(((game.mg4a.div(4).pow(0.73)).div(20)).mul(game.mg4p))
+  game.mg5boost = game.mg5boost.add(game.mg5a.pow(1.1).mul(0.001))
+}
+//code from https://github.com/IvarK/IvarK.github.io/blob/master/javascripts/core/format.js
+function letter(power,str) {
+    const len = str.length;
+    function lN(n) {
+        let result = 1;
+        for (var j = 0; j < n; ++j) result = len*result+1;
+        return result;
+    }
+    if (power <= 5) return str[0];
+    power = Math.floor(power / 3);
+    let i=0;
+    while (power >= lN(++i));
+    if (i==1) return str[power-1];
+    power -= lN(i-1);
+    let ret = '';
+    while (i>0) ret += str[Math.floor(power/Math.pow(len,--i))%len]
+    return ret;
 }
 function fix(a) {
-  if (a.gte(1e100)) {
-    return a.toFixed(2)
-  } else {
-    return a.toFixed(2)
+  if (game.settings.notationstate === 0) {
+      if (a.gte(1e17) && a.lte("1e1000")) {
+        return a.toFixed(2)
+      } else if (a.gte(1e3)) {
+        var aa = a.logBase(10)
+        var ab = aa.floor()
+        var ac = aa.sub(ab)
+        var ad = N(10).pow(ac).toFixed(2)
+        return ad + "e" + ab
+      } else {
+        return a.toFixed(2)
+      }
+  } else if (game.settings.notationstate === 1) {
+    if (a.gte(1e3)) {
+      var ba = a.logBase(10)
+      var bb = ba.mod(3)
+      var bc = N(10).pow(bb)
+      var bd = ba.floor()
+      var cancer = ['😠', '🎂', '🎄', '💀', '🍆', '👪', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡']
+      return bc.toFixed(2) + letter(bd.toNumber(),cancer)
+    } else {
+      return a.toFixed(2)
+    }
   }
 }
 function mf() {
   if (game.mfu) {
-    game.atoms.add(getAOR())
-    game.matter = N(10)
-    game.mg1a = N(0)
-    game.mg2a = N(0)
-    game.mg3a = N(0)
-    game.mg4a = N(0)
-    game.mg5a = N(0)
-    game.mg1c = N(10)
-    game.mg2c = N(500)
-    game.mg3c = N(25000)
-    game.mg4c = N(200)
-    game.mg5c = N(1e13)
-    game.mg1b = N(0)
-    game.mg2b = N(0)
-    game.mg3b = N(0)
-    game.mg4b = N(0)
-    game.mg5b = N(0)
-    game.mg1p = N(1)
-    game.mg2p = N(1)
-    game.mg3p = N(1)
-    game.mg4p = N(1)
-    game.mg5p = N(1)
-    game.mg2u = false
-    game.mg3u = false
-    game.mg4u = false
-    game.mg5u = false
-    game.mft = game.mft.add(1)
-    game.mfu = false
+    if (game.settings.mfw) {
+      if (confirm("Doing a Matter Fusion will reset almost all of your progress leading up to this point for atoms.")) {
+        mfr()
+      }
+    } else {
+      mfr()
+    }
   }
+}
+function mfr() {
+  game.atoms = game.atoms.add(getAOR())
+  if (game.upgrades.u5) {
+    game.matter = N(1e7)
+  } else {
+    game.matter = N(10)
+  }
+  game.mg1a = N(0)
+  game.mg2a = N(0)
+  game.mg3a = N(0)
+  game.mg4a = N(0)
+  game.mg5a = N(0)
+  game.mg1c = N(10)
+  game.mg2c = N(500)
+  game.mg3c = N(25000)
+  game.mg4c = N(200)
+  game.mg5c = N(1e13)
+  game.mg1b = N(0)
+  game.mg2b = N(0)
+  game.mg3b = N(0)
+  game.mg4b = N(0)
+  game.mg5b = N(0)
+  game.mg1p = N(1)
+  game.mg2p = N(1)
+  game.mg3p = N(1)
+  game.mg4p = N(1)
+  game.mg5p = N(1)
+  game.mg2u = false
+  game.mg3u = false   
+  game.mg4u = false
+  game.mg5u = false
+  game.mg5boost = N(1)
+  game.mft = game.mft.add(1)
+  game.mfu = false
 }
 //the reason why i did this is complicated
 function update() {
@@ -1915,8 +2003,22 @@ function update() {
   document.getElementById("b2").textContent = "Buy one for " + fix(game.mg2c) + " matter"
   document.getElementById("b3").textContent = "Buy one for " + fix(game.mg3c) + " matter"
   document.getElementById("b4").textContent = "Buy one for " + fix(game.mg4c) + " mg1"
+  document.getElementById("b5").textContent = "Buy one for " + fix(game.mg5c) + " matter"
+  document.getElementById("mg5a").textContent = "Amount: " + fix(game.mg5a)
+  document.getElementById("mg5p").innerHTML = "Production: " + fix(N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4))) + " matter / sec <br> Production: " + fix(game.mg5a.pow(1.1).mul(0.001)) + "x mg1 + mg3 power / sec"
   document.getElementById("mfb").innerHTML = "Matter Fusion <br> Gain " + fix(getAOR()) + " Atoms <br> " + fix(getAOR().div(game.timf).mul(3000)) + " Atoms / minute"
+  document.getElementById("atm").textContent = fix(game.atoms)
   game.timf = game.timf.add(1)
+  game.mg1p = game.per10.pow((game.mg1b.div(10)).floor()).mul(game.mg5boost)
+  game.mg2p = game.per10.pow((game.mg2b.div(10)).floor())
+  document.getElementById("u1").innerHTML = "Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (" + fix(game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2)) + "x) <br> Cost: 1 matter"
+  if (game.upgrades.u1) {
+    game.mg3p = game.per10.pow((game.mg3b.div(10)).floor()).mul((game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2)))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2))
+  } else {
+    game.per10.pow(game.mg3b.div(10).floor()).mul(game.mg5boost)
+  }
+  game.mg4p = game.per10.pow((game.mg4b.div(10)).floor())
+  game.mg5p = game.per10.pow((game.mg5b.div(10)).floor())
   document.getElementById("t")
   if (game.matter.gte(game.mg1c)) {
     document.getElementById("b1").className = "av bb"
@@ -1938,11 +2040,66 @@ function update() {
   } else {
     document.getElementById("b4").className = "uav bb"
   }
+  if (game.matter.gte(game.mg5c)) {
+    document.getElementById("b5").className = "av bb"
+  } else {
+    document.getElementById("b5").className = "uav bb"
+  }
+  if (game.upgrades.u1) {
+    document.getElementById("u1").className = "ub ubo"
+  }
+  if (game.upgrades.u2) {
+    document.getElementById("u2").className = "ub ubo"
+    game.per10 = N(1.55)
+  }
+  if (game.upgrades.u3) {
+    document.getElementById("u3").className = "ub ubo"
+    autobuyt1()
+  }
+  if (game.upgrades.u4) {
+    document.getElementById("u4").className = "ub ubo"
+  }
+  if (game.upgrades.u5) {
+    document.getElementById("u5").className = "ub ubo"
+  }
+  if (game.atoms.gte(1) && !game.upgrades.u1) {
+    document.getElementById("u1").className = "ub av"
+  } else if (!game.upgrades.u1) {
+    document.getElementById("u1").className = "ub uav"
+  }
+  if (game.atoms.gte(2) && !game.upgrades.u2) {
+    document.getElementById("u2").className = "ub av"
+  } else if (!game.upgrades.u2) {
+    document.getElementById("u2").className = "ub uav"
+  }
+  if (game.atoms.gte(4) && !game.upgrades.u3) {
+    document.getElementById("u3").className = "ub av"
+  } else if (!game.upgrades.u3) {
+    document.getElementById("u3").className = "ub uav"
+  }
+  if (game.atoms.gte(6) && !game.upgrades.u4) {
+    document.getElementById("u4").className = "ub av"
+  } else if (!game.upgrades.u4) {
+    document.getElementById("u4").className = "ub uav"
+  }
+  if (game.atoms.gte(3) && !game.upgrades.u5 && game.upgrades.bought.gte(4)) {
+    document.getElementById("u5").className = "ub av"
+  } else if (!game.upgrades.u5) {
+    document.getElementById("u5").className = "ub uav"
+  }
   unlock()
   document.getElementById("mg2").hidden = !game.mg2u
   document.getElementById("mg3").hidden = !game.mg3u
   document.getElementById("mg4").hidden = !game.mg4u
   document.getElementById("mfb").hidden = !game.mfu
+  document.getElementById("mfw").hidden = !game.settings.mfwu
+  document.getElementById("mg5").hidden = !game.mg5u
+}
+function autobuyt1() {
+  document.getElementById("b1").click()
+  document.getElementById("b2").click()
+  document.getElementById("b3").click()
+  document.getElementById("b4").click()
 }
 function unlock() {
   if (!game.mg2u) {
@@ -1954,6 +2111,9 @@ function unlock() {
   if (!game.mg4u) {
     game.mg4u = game.mg3a.gte(3)
   }
+  if (!game.mg5u && game.upgrades.u4 && game.mg4a.gte(2)) {
+    game.mg5u = game.mg4a.gte(2)
+  }
   if (game.mft.lt(1)) {
     game.mfu = game.matter.gte(1e12)
   } else if (game.matter.gte(1e12)) {
@@ -1962,6 +2122,17 @@ function unlock() {
   if (game.mft.gte(1)) {
     document.getElementById("mftb").hidden = false
   }
+  if (game.settings.mfwu) {
+    game.settings.mfwu = game.mfu
+  }
+}
+function mfwarning() {
+  if (game.settings.mfw) {
+    document.getElementById("mfw").textContent = "Turn on Matter Fusion warning"
+  } else {
+    document.getElementById("mfw").textContent = "Turn off Matter Fusion warning"
+  }
+  game.settings.mfw = !game.settings.mfw
 }
 var test2 = setInterval(update,50)
 function buyMG(type) {
@@ -1970,7 +2141,6 @@ function buyMG(type) {
        if (game.matter.gte(game.mg1c)) {
          game.mg1a = game.mg1a.add(1)
          game.mg1b = game.mg1b.add(1)
-         game.mg1p = game.per10.pow((game.mg1b.div(10)).floor())
          game.matter = game.matter.sub(game.mg1c)
          if (game.mg1b.lt(50)) {
            game.mg1c = game.mg1c.add(3)
@@ -1983,7 +2153,6 @@ function buyMG(type) {
        if (game.matter.gte(game.mg2c)) {
          game.mg2a = game.mg2a.add(1)
          game.mg2b = game.mg2b.add(1)
-         game.mg2p = game.per10.pow((game.mg2b.div(10)).floor())
          game.matter = game.matter.sub(game.mg2c)
          if (game.mg2b.lt(45)) {
            game.mg2c = game.mg2c.add(150)
@@ -1996,7 +2165,6 @@ function buyMG(type) {
        if (game.matter.gte(game.mg3c)) {
          game.mg3a = game.mg3a.add(1)
          game.mg3b = game.mg3b.add(1)
-         game.mg3p = game.per10.pow((game.mg3b.div(10)).floor())
          game.matter = game.matter.sub(game.mg3c)
          game.mg3c = game.mg3c.mul(1.5)
        }
@@ -2005,13 +2173,20 @@ function buyMG(type) {
        if (game.mg1a.gte(game.mg4c)) {
          game.mg4a = game.mg4a.add(1)
          game.mg4b = game.mg4b.add(1)
-         game.mg4p = game.per10.pow((game.mg4b.div(10)).floor())
          game.mg1a = game.mg1a.sub(game.mg4c)
          if (game.mg4b.lt(14)) {
            game.mg4c = game.mg4c.add(70)
          } else {
            game.mg4c = game.mg4c.mul(1.25)
          }
+       }
+       break;
+       case 5:
+       if (game.matter.gte(game.mg5c)) {
+         game.mg5a = game.mg5a.add(1)
+         game.mg5b = game.mg5b.add(1)
+         game.matter = game.matter.sub(game.mg5c)
+         game.mg5c = game.mg5c.mul(1.28)
        }
        break;
   }
@@ -2032,7 +2207,7 @@ var bv = Math.round(Math.random() * 255)
 let intv
 var intvon = false
 function swapunr() {
-  if (intvon === true) {
+  if (intvon) {
     clearInterval(intv)
     intvon = false
     document.getElementById("body").style = "background-color: #FFFFFF"
@@ -2066,5 +2241,44 @@ function clorr() {
     bv = bv - 5
   } else {
     bv = bv + Math.round(Math.random() * 6 - 3)
+  }
+}
+function buyu(a) {
+  switch (a) {
+    case 1:
+      if (game.atoms.gte(1) && !game.upgrades.u1) {
+        game.upgrades.u1 = true
+        game.atoms = game.atoms.sub(1)
+        game.upgrades.bought = game.upgrades.bought.add(1)
+      }
+      break;
+    case 2:
+      if (game.atoms.gte(2) && !game.upgrades.u2) {
+        game.upgrades.u2 = true
+        game.atoms = game.atoms.sub(2)
+        game.upgrades.bought = game.upgrades.bought.add(1)
+      }
+      break;
+    case 3:
+      if (game.atoms.gte(4) && !game.upgrades.u3) {
+        game.upgrades.u3 = true
+        game.atoms = game.atoms.sub(4)
+        game.upgrades.bought = game.upgrades.bought.add(1)
+      }
+      break;
+    case 4:
+      if (game.atoms.gte(6) && !game.upgrades.u4) {
+        game.upgrades.u4 = true
+        game.atoms = game.atoms.sub(6)
+        game.upgrades.bought = game.upgrades.bought.add(1)
+      }
+      break;
+    case 5:
+      if (game.atoms.gte(3) && game.upgrades.bought.gte(4) && !game.upgrades.u5) {
+        game.upgrades.u5 = true
+        game.atoms = game.atoms.sub(3)
+        game.upgrades.bought = game.upgrades.bought.add(1)
+      }
+      break;
   }
 }
