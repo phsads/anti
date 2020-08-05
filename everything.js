@@ -1986,6 +1986,7 @@ function mfr() {
   game.mg5boost = N(1)
   game.mft = game.mft.add(1)
   game.mfu = false
+  game.timf = N(0)
 }
 //the reason why i did this is complicated
 function update() {
