@@ -1821,8 +1821,8 @@ class Game {
       u3: false,
       u4: false,
       u5: false,
-      bought: N(0)
     }
+    this.upgradesbought = N(d.upgradesbought || 0)
   }
 }
 var notationsamount = 2
@@ -2082,7 +2082,7 @@ function update() {
   } else if (!game.upgrades.u4) {
     document.getElementById("u4").className = "ub uav"
   }
-  if (game.atoms.gte(3) && !game.upgrades.u5 && game.upgrades.bought.gte(4)) {
+  if (game.atoms.gte(3) && !game.upgrades.u5 && game.upgradesbought.gte(4)) {
     document.getElementById("u5").className = "ub av"
   } else if (!game.upgrades.u5) {
     document.getElementById("u5").className = "ub uav"
@@ -2122,7 +2122,7 @@ function unlock() {
   if (game.mft.gte(1)) {
     document.getElementById("mftb").hidden = false
   }
-  if (game.settings.!mfwu) {
+  if (!game.settings.mfwu) {
     game.settings.mfwu = game.mfu
   }
 }
@@ -2249,35 +2249,35 @@ function buyu(a) {
       if (game.atoms.gte(1) && !game.upgrades.u1) {
         game.upgrades.u1 = true
         game.atoms = game.atoms.sub(1)
-        game.upgrades.bought = game.upgrades.bought.add(1)
+        game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
     case 2:
       if (game.atoms.gte(2) && !game.upgrades.u2) {
         game.upgrades.u2 = true
         game.atoms = game.atoms.sub(2)
-        game.upgrades.bought = game.upgrades.bought.add(1)
+        game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
     case 3:
       if (game.atoms.gte(4) && !game.upgrades.u3) {
         game.upgrades.u3 = true
         game.atoms = game.atoms.sub(4)
-        game.upgrades.bought = game.upgrades.bought.add(1)
+        game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
     case 4:
       if (game.atoms.gte(6) && !game.upgrades.u4) {
         game.upgrades.u4 = true
         game.atoms = game.atoms.sub(6)
-        game.upgrades.bought = game.upgrades.bought.add(1)
+        game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
     case 5:
-      if (game.atoms.gte(3) && game.upgrades.bought.gte(4) && !game.upgrades.u5) {
+      if (game.atoms.gte(3) && game.upgradesbought.gte(4) && !game.upgrades.u5) {
         game.upgrades.u5 = true
         game.atoms = game.atoms.sub(3)
-        game.upgrades.bought = game.upgrades.bought.add(1)
+        game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
   }
