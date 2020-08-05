@@ -15,4 +15,4 @@ v1.4.3a: Atoms and upgrades now function\
 v1.4.4a: mg5 added (now broken)\
 v1.4.4.1a: u1 buffed\
 v1.4.4.2a: mg5 is now functional and doesn't breaks\
-__v1.5a: Cancer notation added__\
+__v1.5a: Cancer notation added__
