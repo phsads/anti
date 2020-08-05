@@ -42,7 +42,7 @@
       </ul> 
       </td>
     </tr>
-            <tr>
+      <tr>
           <td id="mg3">
       <ul>
         <li>Matter Generator 3</li>
@@ -64,6 +64,18 @@
       </ul>
       </td>
     </tr>
+    <tr>
+      <td id="mg5">
+        <ul>
+        <li>Matter Generator 5</li>
+        <li id="mg5a">Amount: #</li>
+        <li id="mg5p">Production: # matter / sec <br> Production: 0.001x mg1 + mg3 power / sec</li>
+        <li>
+        <button onclick="buyMG(5)" class="bb" id="b5">Buy one for 1e13 matter</button>
+        </li>
+      </ul>
+      </td>
+    </tr>
       </table>
     </div>
     <div id="mftab" hidden=true>
@@ -73,19 +85,19 @@
       <table style="margin: 0 auto; border-spacing:0; padding:0; border-width:0">
         <tr>
           <td>
-            <button id="u1" class="simpbutt ub">Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (#x) <br> Cost: 1 matter</button>
+            <button id="u1" class="ub uav" onclick="buyu(1)">Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (#x) <br> Cost: 1 matter</button>
           </td>
           <td>
-            <button id="u2" class="simpbutt ub">Increase the per10 multipiler by 0.05 (x1.5 -> x1.55) <br> Cost: 2 matter</button>
+            <button id="u2" class="ub uav" onclick="buyu(2)">Increase the per10 multipiler by 0.05 (x1.5 -> x1.55) <br> Cost: 2 matter</button>
           </td>
           <td>
-            <button id="u3" class="simpbutt ub"></button>
+            <button id="u3" class="ub uav" onclick="buyu(3)">Autobuys mg1-4 <br> Cost: 4 matter</button>
           </td>
           <td>
-            <button id="u4" class="simpbutt ub"></button>
+            <button id="u4" class="ub uav" onclick="buyu(4)">Unlocks mg5 <br> Cost: 6 matter</button>
           </td>
           <td>
-            <button id="u5" class="simpbutt ub"></button>
+            <button id="u5" class="ub uav" onclick="buyu(5)">Start with 1e7 matter and unlocks the 2nd row <br> Cost: 3 matter <br> Requirement: 4 upgrades</button>
           </td>
         </tr>
       </table>
@@ -94,8 +106,11 @@
     <div id="sett" hidden=true>
       <button class="simpbutt" onclick="isport()">Import</button>
       <button class="simpbutt" onclick="esport()">Export</button>
+      <button class="simpbutt" onclick="clearsave()">Clear Save</button>
       <button class="simpbutt" onclick="changec()">Change background color</button>
       <button class="simpbutt" onclick="swapunr()">Turn on/off unstable rainbow background</button>
+      <button class="simpbutt" onclick="mfwarning()" id="mfw" hidden="true">Turn off Matter Fusion warning</button> <br>
+      <button class="simpbutt" onclick="changenotation()" id="notationbutton">Notation: Scientific</button>
     </div>
 </body>
 <script src="everything.js"></script>
