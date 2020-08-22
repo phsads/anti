@@ -16,4 +16,7 @@ v1.4.4a: mg5 added (now broken)\
 v1.4.4.1a: u1 buffed\
 v1.4.4.2a: mg5 is now functional and doesn't breaks\
 __v1.5a: Cancer notation added__\
-v1.5.1a: Row 2 is added
+v1.5.1a: Row 2 is added\
+v1.5.2a: Favicon + favicon easter eggs added\
+v1.5.2.1a: Automation + Challenges tab added but they aren't functional yet
+
