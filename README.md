@@ -18,5 +18,6 @@ v1.4.4.2a: mg5 is now functional and doesn't breaks\
 __v1.5a: Cancer notation added__\
 v1.5.1a: Row 2 is added\
 v1.5.2a: Favicon + favicon easter eggs added\
-v1.5.2.1a: Automation + Challenges tab added but they aren't functional yet
+v1.5.2.1a: Automation + Challenges tab added but they aren't functional yet\
+__v1.7a: Since v1.6, is skipped, this is the biggest update so far. More upgrades, challenges, functioning automation (not really extremely functioning) and more__
 
