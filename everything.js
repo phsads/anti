@@ -1282,12 +1282,12 @@
   };
   P.toHyperE=function (){
     if (this.layer) throw Error(expantaNumError+"Sorry, but this prototype doesn't support correct Hyper-E notation for numbers larger than 10{MSI}10");
-    if (this.sign==-1) return "-"+this.abs().toHyperE();
+    if (this.sign==-1) return "-"+this.abs().toFixed(2);
     if (isNaN(this.array[0][1])) return "NaN";
     if (!isFinite(this.array[0][1])) return "Infinity";
-    if (this.lt(ExpantaNum.MAX_SAFE_INTEGER)) return String(this.array[0][1]);
-    if (this.lt(ExpantaNum.E_MAX_SAFE_INTEGER)) return "E"+this.array[0][1];
-    var r="E"+this.operator(0)+"#"+this.operator(1);
+    if (this.lt(ExpantaNum.MAX_SAFE_INTEGER)) return String(this.array[0][1].toFixed(2));
+    if (this.lt(ExpantaNum.E_MAX_SAFE_INTEGER)) return "E"+(this.array[0][1]).toFixed(2);
+    var r="E"+this.operator(0).toFixed(2)+"#"+this.operator(1);
     var l=1;
     for (var i=Math.ceil(this.getOperatorIndex(2));i<this.array.length;++i){
       if (l+1<this.array[i][0]) r+="#1".repeat(this.array[i][0]-l-1);
@@ -1821,24 +1821,115 @@ class Game {
       u3: false,
       u4: false,
       u5: false,
+      u6: false,
+      u7: false,
+      u8: false,
+      u9: false,
+      u10: false,
+      u11: false,
+      u12: false,
+      u13: false,
+      u14: false,
+      u15: false,
+
     }
     this.upgradesbought = N(d.upgradesbought || 0)
+    this.mg6a = N(d.mg6a || 0)
+    this.mg6b = N(d.mg6b || 0)
+    this.mg6p = N(d.mg6p || 1)
+    this.mg6c = N(d.mg6c || 1e60)
+    this.mg6u = d.mg6u || false 
+    this.chal = d.chal || {
+      c1: false,
+      c2: false,
+      c3: false,
+      c4: false,
+    }
+    this.chalin = d.chalin || 0
+    this.auto = d.auto || {
+      tiers: [0,0,0,0,0,0,0],
+      active: [false,false,false,false,false,false,false],
+      mftype: "amount"
+    }
+    this.mfp = N(d.mfp || 0)
+    this.acv = d.acv || {
+      10:false,
+      11:false,
+      12:false,
+      13:false,
+      14:false,
+      15:false,
+      16:false,
+      17:false,
+      18:false,
+      19:false,
+      20:false,
+      21:false,
+      22:false,
+      23:false,
+      24:false,
+      25:false,
+      26:false,
+      27:false,
+      28:false,
+      29:false,
+      30:false,
+      31:false,
+      32:false,
+      33:false,
+      34:false,
+      35:false,
+      36:false,
+      37:false,
+      38:false,
+      39:false,
+    }
   }
 }
-var notationsamount = 2
+function boolvert(a) {
+  if (!a) {
+    return N(0)
+  } else {
+    return N(1)
+  }
+}
+// 0 = scientific
+// 1 = cancer
+// 2 = log
+// 3 hyperEEEEEEEEEEEEEEEEEEE
+// 4 infinity
 function changenotation() {
-  if (game.settings.notationstate === notationsamount-1) {
+  if (game.settings.notationstate === 4) {
     game.settings.notationstate = 0
     document.getElementById("notationbutton").textContent = "Notation: Scientific"
-  } else {
+  } else if (game.settings.notationstate === 0) {
     game.settings.notationstate++
     document.getElementById("notationbutton").textContent = "Notation: Cancer"
+  } else if (game.settings.notationstate === 1) {
+    game.settings.notationstate++
+    document.getElementById("notationbutton").textContent = "Notation: Logarithmic"
+  } else if (game.settings.notationstate === 2) {
+    game.settings.notationstate++
+    document.getElementById("notationbutton").textContent = "Notation: HyperE"
+  } else if (game.settings.notationstate === 3) {
+    game.settings.notationstate++
+    document.getElementById("notationbutton").textContent = "Notation: Infinity"
+  }
+}
+function repeatfunction(func,param,times) {
+  while (times > 0) {
+    times--
+    if (param === undefined) {
+      func()
+    } else {
+      func(param)
+    }
   }
 }
 function clearsave() {
   if(confirm("Are you sure you want to wipe your save?")) {
+    game = new Game()
     localStorage.removeItem("save")
-    alert("Refresh this page.")
   }
 }
 function gTT(a) {
@@ -1847,16 +1938,49 @@ function gTT(a) {
       document.getElementById("mgs").hidden = false
       document.getElementById("mftab").hidden = true
       document.getElementById("sett").hidden = true
+      document.getElementById("auto").hidden = true
+      document.getElementById("challenges").hidden = true
+      document.getElementById("achivements").hidden = true
       break;
     case 2:
       document.getElementById("mgs").hidden = true
       document.getElementById("mftab").hidden = false
       document.getElementById("sett").hidden = true
+      document.getElementById("auto").hidden = true
+      document.getElementById("challenges").hidden = true
+      document.getElementById("achivements").hidden = true
       break;
     case 3:
       document.getElementById("mgs").hidden = true
       document.getElementById("mftab").hidden = true
       document.getElementById("sett").hidden = false
+      document.getElementById("auto").hidden = true
+      document.getElementById("challenges").hidden = true
+      document.getElementById("achivements").hidden = true
+      break;
+    case 4:
+      document.getElementById("mgs").hidden = true
+      document.getElementById("mftab").hidden = true
+      document.getElementById("sett").hidden = true
+      document.getElementById("auto").hidden = true
+      document.getElementById("challenges").hidden = false
+      document.getElementById("achivements").hidden = true
+      break;
+    case 5:
+      document.getElementById("mgs").hidden = true
+      document.getElementById("mftab").hidden = true
+      document.getElementById("sett").hidden = true
+      document.getElementById("auto").hidden = false
+      document.getElementById("challenges").hidden = true
+      document.getElementById("achivements").hidden = true
+      break;
+    case 6:
+      document.getElementById("mgs").hidden = true
+      document.getElementById("mftab").hidden = true
+      document.getElementById("sett").hidden = true
+      document.getElementById("auto").hidden = true
+      document.getElementById("challenges").hidden = true
+      document.getElementById("achivements").hidden = false
       break;
   }
 }
@@ -1877,7 +2001,13 @@ function load(sv) {
   }
 }
 function getAOR() {
-  return N(7).pow(game.matter.logBase(17.9).div(150))
+  if (game.upgrades.u15) {
+    return N(8).pow(game.matter.logBase(17.9).div(30.8)).mul((gum(9)).pow(gum(14)))
+  } else if (game.upgrades.u7) {
+    return N(7).pow(game.matter.logBase(17.9).div(30.8)).mul((gum(9)).pow(gum(14)))
+  } else {
+    return N(7).pow(game.matter.logBase(17.9).div(150)).mul((gum(9)).pow(gum(14)))
+  }
 }
 var sa = setInterval(save,700)
 var game
@@ -1885,39 +2015,47 @@ if (!load()) {
   game = new Game()
 }
 function getMPS() {
-  var a = game.mg1a.pow(1.2).mul(game.mg1p)
-  var b = game.mg2a.pow(1.22).mul(15).mul(game.mg2p)
-  var c = game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)
-  var d = N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4))
+  if (game.chalin === 4) {
+    var aae = N(3000).div(game.timf.div(20).add(3000))
+  } else {
+    var aae = N(1)
+  }
+  var a = (game.mg1a.pow(1.2).mul(game.mg1p)).pow(aae)
+  var b = (game.mg2a.pow(1.22).mul(15).mul(game.mg2p)).pow(aae)
+  var c = (game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)).pow(aae)
+  var d = ((N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4))).mul(game.mg5p)).pow(aae)
   return a.add(b).add(c).add(d)
 }
 function generate() {
-  game.matter = game.matter.add(getMPS().div(20))
-  game.mg1a = game.mg1a.add(((game.mg2a.div(6).pow(0.8)).div(20)).mul(game.mg2p))
-  game.mg2a = game.mg2a.add(((game.mg4a.div(4).pow(0.73)).div(20)).mul(game.mg4p))
-  game.mg5boost = game.mg5boost.add(game.mg5a.pow(1.1).mul(0.001))
+  if (game.chalin === 4) {
+    var aae = N(3000).div(game.timf.div(20).add(3000))
+  } else {
+    var aae = N(1)
+  }
+  game.matter = game.matter.add((getMPS().div(20)))
+  game.mg1a = game.mg1a.add((((game.mg2a.div(6).pow(0.8)).div(20)).mul(game.mg2p)).pow(aae))
+  game.mg2a = game.mg2a.add((((game.mg4a.div(4).pow(0.73)).div(20)).mul(game.mg4p)).pow(aae))
+  game.mg5boost = game.mg5boost.add((game.mg5a.pow(1.1).mul(0.001).mul(game.mg5p).div(20)).pow(aae))
+  game.mg3a = game.mg3a.add((game.mg6a.pow(2.5).mul(1e10).mul(game.mg6p).div(20)).pow(aae))
 }
-//code from https://github.com/IvarK/IvarK.github.io/blob/master/javascripts/core/format.js
-function letter(power,str) {
-    const len = str.length;
-    function lN(n) {
-        let result = 1;
-        for (var j = 0; j < n; ++j) result = len*result+1;
-        return result;
-    }
-    if (power <= 5) return str[0];
-    power = Math.floor(power / 3);
-    let i=0;
-    while (power >= lN(++i));
-    if (i==1) return str[power-1];
-    power -= lN(i-1);
-    let ret = '';
-    while (i>0) ret += str[Math.floor(power/Math.pow(len,--i))%len]
-    return ret;
+//code from https://github.com/aarextiaokhiao/IvarK.github.io/blob/master/javascripts/core/format.js
+function letter(power, str) {
+	const len = str.length;
+    let ret = ''
+	power = Math.floor(power / 3)
+	let skipped = Math.floor(Math.log10(power*(len-1)+1)/Math.log10(len))-7
+	if (skipped < 4) skipped = 0
+	else power = Math.floor((power-(Math.pow(len,skipped)-1)/(len-1)*len)/Math.pow(len,skipped))
+	while (power > 0) {
+		ret = str[(power - 1) % len] + ret
+		power = Math.ceil(power / len) - 1
+	}
+	if (skipped) ret += "[" + skipped + "]"
+	return ret
 }
 function fix(a) {
   if (game.settings.notationstate === 0) {
-      if (a.gte(1e17) && a.lte("1e1000")) {
+      if (a.gte(1e17) && a.lte("1e100")) {
         return a.toFixed(2)
       } else if (a.gte(1e3)) {
         var aa = a.logBase(10)
@@ -1939,6 +2077,16 @@ function fix(a) {
     } else {
       return a.toFixed(2)
     }
+  } else if (game.settings.notationstate === 2) {
+    return "e" + a.logBase(10).toFixed(2)
+  } else if (game.settings.notationstate === 3) {
+    if (a.lt(1e20)) {
+      return "E" + a.logBase(10).toFixed(2)
+    } else {
+      return a.toHyperE()
+    }
+  } else if (game.settings.notationstate === 4) {
+    return a.logBase(1.79e308).toFixed(4) + "∞"
   }
 }
 function mf() {
@@ -1952,9 +2100,25 @@ function mf() {
     }
   }
 }
-function mfr() {
-  game.atoms = game.atoms.add(getAOR())
-  if (game.upgrades.u5) {
+function startchal(chal) {
+  mfr(2)
+  game.chalin = chal
+  switch (chal) {
+    case 1:
+      clearInterval(uin)
+      uin = setInterval(update,250)
+    break;
+  }
+}
+function mfr(c) {
+  if (c === undefined) {
+    game.atoms = game.atoms.add(getAOR())
+  }
+  clearInterval(uin)
+  uin = setInterval(update,50)
+  if (game.upgrades.u12) {
+    game.matter = N(1e7).add(gum(12))
+  } else if (game.upgrades.u5) {
     game.matter = N(1e7)
   } else {
     game.matter = N(10)
@@ -1964,63 +2128,198 @@ function mfr() {
   game.mg3a = N(0)
   game.mg4a = N(0)
   game.mg5a = N(0)
+  game.mg6a = N(0)
   game.mg1c = N(10)
   game.mg2c = N(500)
   game.mg3c = N(25000)
   game.mg4c = N(200)
   game.mg5c = N(1e13)
+  game.mg6c = N(1e60)
   game.mg1b = N(0)
   game.mg2b = N(0)
   game.mg3b = N(0)
   game.mg4b = N(0)
   game.mg5b = N(0)
+  game.mg6b = N(0)
   game.mg1p = N(1)
   game.mg2p = N(1)
   game.mg3p = N(1)
   game.mg4p = N(1)
   game.mg5p = N(1)
+  game.mg6p = N(1)
   game.mg2u = false
   game.mg3u = false   
   game.mg4u = false
   game.mg5u = false
+  game.mg6u = false
   game.mg5boost = N(1)
   game.mft = game.mft.add(1)
   game.mfu = false
   game.timf = N(0)
+  game.mfp = N(0)
 }
-//the reason why i did this is complicated
-function update() {
-  generate()
-  document.getElementById("mg1a").textContent = "Amount: " + fix(game.mg1a)
-  document.getElementById("mg1p").textContent = "Production: " + fix(game.mg1a.pow(1.2).mul(game.mg1p)) + " matter / sec"
-  document.getElementById("mg2a").textContent = "Amount: " + fix(game.mg2a)
-  document.getElementById("mg2p").innerHTML = "Production: " + fix(game.mg2a.pow(1.22).mul(15).mul(game.mg2p)) + " matter / sec <br> Production: " + fix(game.mg2a.div(6).pow(0.8).mul(game.mg2p)) + " mg1 / sec"
-  document.getElementById("mg3a").textContent = "Amount: " + fix(game.mg3a)
-  document.getElementById("mg3p").textContent = "Production: " + fix(game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)) + " matter / sec"
-  document.getElementById("mg4a").textContent = "Amount: " + fix(game.mg4a)
-  document.getElementById("mg4p").textContent = "Production: " + fix((game.mg4a.div(4)).pow(0.73).mul(game.mg4p)) + " mg2 / sec"
-  document.getElementById("man").textContent = fix(game.matter)
-  document.getElementById("b1").textContent = "Buy one for " + fix(game.mg1c) + " matter"
-  document.getElementById("b2").textContent = "Buy one for " + fix(game.mg2c) + " matter"
-  document.getElementById("b3").textContent = "Buy one for " + fix(game.mg3c) + " matter"
-  document.getElementById("b4").textContent = "Buy one for " + fix(game.mg4c) + " mg1"
-  document.getElementById("b5").textContent = "Buy one for " + fix(game.mg5c) + " matter"
-  document.getElementById("mg5a").textContent = "Amount: " + fix(game.mg5a)
-  document.getElementById("mg5p").innerHTML = "Production: " + fix(N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4))) + " matter / sec <br> Production: " + fix(game.mg5a.pow(1.1).mul(0.001)) + "x mg1 + mg3 power / sec"
-  document.getElementById("mfb").innerHTML = "Matter Fusion <br> Gain " + fix(getAOR()) + " Atoms <br> " + fix(getAOR().div(game.timf).mul(3000)) + " Atoms / minute"
-  document.getElementById("atm").textContent = fix(game.atoms)
-  game.timf = game.timf.add(1)
-  game.mg1p = game.per10.pow((game.mg1b.div(10)).floor()).mul(game.mg5boost)
-  game.mg2p = game.per10.pow((game.mg2b.div(10)).floor())
-  document.getElementById("u1").innerHTML = "Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (" + fix(game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2)) + "x) <br> Cost: 1 atoms"
-  if (game.upgrades.u1) {
-    game.mg3p = game.per10.pow((game.mg3b.div(10)).floor()).mul((game.mg1b.div(5).add(game.mg2b.div(4).add(game.mg4b.div(2)))).pow(1.35).mul(game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2))
-  } else {
-    game.per10.pow(game.mg3b.div(10).floor()).mul(game.mg5boost)
+function gum(a) {
+  switch (a) {
+    case 1:
+      if (game.upgrades.u11) {
+        return ((game.mg1a.add(1)).mul((game.mg2a.add(1)).mul((game.mg4a.add(1)).mul((game.mg5a.add(1)).mul((game.mg6a.add(1))))))).pow(0.55)
+      }
+      var aa = game.mg1b.div(5).mul(game.mg2b.div(4).mul(game.mg4b.div(2)))
+      var ab = (game.mg1b.add(game.mg2b.add(game.mg4b))).mul(1.2)
+      return ((aa.pow(1.13)).mul(ab).mul(boolvert(game.upgrades.u1))).add(1)
+    case 6:
+      var ba = (game.atoms.add(1)).logBase(2)
+      var bb = (game.mft.add(1)).logBase(3)
+      return (ba.pow(bb).mul(boolvert(game.upgrades.u6))).add(1)
+    case 9:
+      var ca = (game.mft.add(1)).logBase(2)
+      return (ca.div(3).mul(boolvert(game.upgrades.u9))).add(1)
+    case 12:
+      return game.matter.pow(0.12)
+    case 14:
+      return N(document.getElementsByClassName("acvc").length/7).mul(boolvert(game.upgrades.u14))
   }
-  game.mg4p = game.per10.pow((game.mg4b.div(10)).floor())
-  game.mg5p = game.per10.pow((game.mg5b.div(10)).floor())
+}
+function changepower() {
+  if (game.chalin === 2) {
+    var aad = 20
+  } else {
+    var aad = 10
+  }
+  game.mg1p = game.per10.pow((game.mg1b.div(aad)).floor()).mul(game.mg5boost).mul(gum(6))
+  game.mg2p = game.per10.pow((game.mg2b.div(aad)).floor()).mul(gum(6))
+  game.mg3p = game.per10.pow((game.mg3b.div(aad)).floor()).mul(game.mg5boost).mul(gum(1)).mul(gum(6))
+  game.mg4p = game.per10.pow((game.mg4b.div(aad)).floor()).mul(gum(6))
+  game.mg5p = game.per10.pow((game.mg5b.div(aad)).floor()).mul(gum(6))
+  game.mg6p = game.per10.pow((game.mg6b.div(aad)).floor()).mul(gum(6))
+}
+function getAchivements() {
+  if(game.mg1b.gte(1))game.acv[10]=true
+  if(game.mg1b.gte(40))game.acv[11]=true
+  if(game.mg2b.gte(1))game.acv[12]=true
+  if(game.mg2b.gte(10))game.acv[13]=true
+  if(game.mg3u)game.acv[14]=true
+  if(game.mg4u)game.acv[15]=true
+  if(game.matter.gte(1e6))game.acv[16]=true
+  if(game.mg3b.gte(14))game.acv[17]=true
+  if(game.mg2b.gte(10))game.acv[18]=true
+  if(game.atoms.gte(1))game.acv[19]=true
+  if(game.upgrades.u3)game.acv[20]=true
+  if(game.mg5b.gte(1))game.acv[21]=true
+  if(game.matter.gte(1e55))game.acv[22]=true
+  if(game.upgrades.u6)game.acv[23]=true
+  if(game.mg6u)game.acv[24]=true
+  if(game.atoms.gte(100))game.acv[25]=true
+  if(game.upgrades.u10)game.acv[26]=true
+  if(game.chal.c1&&game.chal.c2)game.acv[27]=true
+  if(game.chal.c4)game.acv[28]=true
+  if(!game.auto.tiers.includes(1)&&!game.auto.tiers.includes(0))game.acv[29]=true
+  if(game.matter.gte(1e150)) game.acv[30]=true
+  if(game.mg1b.gt(2150)||game.mg2b.gt(1600)||game.mg3b.gt(930)||game.mg4b.gt(260)||game.mg5b.gt(1300)||game.mg6b.gt(970))game.acv[31]=true
+  if(getAOR().gte(1e4)) game.acv[32]=true
+  if(!game.auto.tiers.includes(1)&&!game.auto.tiers.includes(2)&&!game.auto.tiers.includes(0))game.acv[33]=true
+  if(game.atoms.gte(1e7))game.acv[34]=true
+  if(game.mft.gte(10000))game.acv[35]=true
+  if(game.mg1a.eq(game.mg1b)&&game.mg1a.gte(315)&&game.mg3a.lte(0)&&game.mg6a.lte(0))game.acv[36]=true
+  if(game.upgrades.u14)game.acv[37]=true
+  if(game.upgrades.u15)game.acv[38]=true
+  if(game.matter.gte(N(2).pow(1024)))game.acv[39]=true
+}
+function update() {
+  if (game.chalin === 4) {
+    var aae = N(1500).div(game.timf.add(1500))
+  } else {
+    var aae = N(1)
+  }
+  var aaj
+  for (aaj in game.acv) {
+    if (game.acv[aaj]) {
+      document.getElementById("a"+aaj).className = "acvc"
+    }
+  }
+  generate()
+  getAchivements()
+  document.getElementById("c1g").textContent = fix(N(1e43))
+  document.getElementById("c2g").textContent = fix(N(1e28))
+  document.getElementById("c3g").textContent = fix(N(1e65))
+  document.getElementById("c4g").textContent = fix(N(1e75))
+  document.getElementById("mg1a").textContent = "Amount: " + fix(game.mg1a)
+  document.getElementById("mg1p").textContent = "Production: " + fix((game.mg1a.pow(1.2).mul(game.mg1p)).pow(aae)) + " matter / sec"
+  document.getElementById("mg2a").textContent = "Amount: " + fix(game.mg2a)
+  document.getElementById("mg2p").innerHTML = "Production: " + fix((game.mg2a.pow(1.22).mul(15).mul(game.mg2p)).pow(aae)) + " matter / sec <br> Production: " + fix((game.mg2a.div(6).pow(0.8).mul(game.mg2p)).pow(aae)) + " mg1 / sec"
+  document.getElementById("mg3a").textContent = "Amount: " + fix(game.mg3a)
+  document.getElementById("mg3p").textContent = "Production: " + fix((game.mg3a.pow(1.4).mul(1500).mul(game.mg3p)).pow(aae)) + " matter / sec"
+  document.getElementById("mg4a").textContent = "Amount: " + fix(game.mg4a)
+  document.getElementById("mg4p").textContent = "Production: " + fix(((game.mg4a.div(4)).pow(0.73).mul(game.mg4p)).pow(aae)) + " mg2 / sec"
+  document.getElementById("man").textContent = fix(game.matter)
+  document.getElementById("bc1").textContent = fix(game.mg1c)
+  document.getElementById("bc2").textContent = fix(game.mg2c)
+  document.getElementById("bc3").textContent = fix(game.mg3c)
+  document.getElementById("bc4").textContent = fix(game.mg4c)
+  document.getElementById("bc5").textContent = fix(game.mg5c)
+  document.getElementById("bc6").textContent = fix(game.mg6c)
+  document.getElementById("mg5a").textContent = "Amount: " + fix(game.mg5a)
+  document.getElementById("mg5p").innerHTML = "Production: " + fix((N(10).pow(game.mg5a.pow(4).logBase(9).mul(2.4)).mul(game.mg5p)).pow(aae)) + " matter / sec <br> Production: " + fix((game.mg5a.pow(1.1).mul(0.001).mul(game.mg5p)).pow(aae)) + "x mg1 + mg3 power / sec"
+  document.getElementById("mg6a").textContent = "Amount: " + fix(game.mg6a)
+  document.getElementById("mg6p").textContent = "Production: " + fix((game.mg6a.pow(2.5).mul(1e10).mul(game.mg6p)).pow(aae)) + " mg3 / sec"
+  document.getElementById("aomf").textContent = "Gain " + fix(getAOR()) + " Atoms"
+  document.getElementById("apm").textContent = fix(getAOR().div(game.timf).mul(3000)) + " Atoms / minute"
+  document.getElementById("atm").textContent = fix(game.atoms)
+  document.getElementById("patm").textContent = fix(game.mfp)
+  changepower()
+  switch (game.chalin) {
+    case 1:
+      document.getElementById("chalp").textContent = (game.matter.logBase(10)).div(0.43).toFixed(3) + "%"
+    break;
+    case 2:
+      document.getElementById("chalp").textContent = (game.matter.logBase(10)).div(0.28).toFixed(3) + "%"
+    break;
+    case 3:
+      document.getElementById("chalp").textContent = (game.matter.logBase(10)).div(0.65).toFixed(3) + "%"
+    break;
+    case 4:
+      document.getElementById("chalp").textContent = (game.matter.logBase(10)).div(0.75).toFixed(3) + "%"
+    break;
+  }
+  if (game.upgrades.u13) {
+    game.per10 = N(2.1)
+  } else if (game.upgrades.u2) {
+    game.per10 = N(1.55)
+  } else {
+    game.per10 = N(1.5)
+  }
+  if (game.chalin) {
+    document.getElementById("sc"+game.chalin).className = "ca"
+    document.getElementById("sc"+game.chalin).textContent = "Active"
+  } else {
+    document.getElementById("sc1").className = "simpbutt"
+    document.getElementById("sc1").textContent = "Start"
+    document.getElementById("sc2").className = "simpbutt"
+    document.getElementById("sc2").textContent = "Start"
+    document.getElementById("sc4").className = "simpbutt"
+    document.getElementById("sc4").textContent = "Start"
+    document.getElementById("sc3").className = "simpbutt"
+    document.getElementById("sc3").textContent = "Start"
+  }
+  document.getElementById("cc").hidden = !game.chalin
+  game.timf = game.timf.add(1)
+  if ((getAOR().div(game.timf).mul(3000).gte(game.mfp)) && game.matter.gte(1e12)) {
+    game.mfp = getAOR().div(game.timf).mul(3000)
+  }
+  document.getElementById("u1e").textContent = "(" + fix(gum(1)) + "x)"
+  document.getElementById("u6e").textContent = "(" + fix(gum(6)) + "x)"
+  document.getElementById("u9e").textContent = "(" + fix(gum(9).pow(gum(14))) + "x)"
+  document.getElementById("u11c").textContent = fix(N(1e4))
+  document.getElementById("u12c").textContent = fix(N(3.5e4))
+  document.getElementById("u13c").textContent = fix(N(1e5))
+  document.getElementById("u14c").textContent = fix(N(2.5e5))
+  document.getElementById("u15c").textContent = fix(N(1e7))
+  document.getElementById("u12e").textContent = fix(gum(12))
+  document.getElementById("u14e").textContent = fix(gum(14))
   document.getElementById("t")
+  if (game.chalin === 3) {
+    game.matter = game.matter.mul(0.95)
+  }
   if (game.matter.gte(game.mg1c)) {
     document.getElementById("b1").className = "av bb"
   } else {
@@ -2046,22 +2345,53 @@ function update() {
   } else {
     document.getElementById("b5").className = "uav bb"
   }
-  if (game.upgrades.u1) {
-    document.getElementById("u1").className = "ub ubo"
+  if (game.matter.gte(game.mg6c)) {
+    document.getElementById("b6").className = "av bb"
+  } else {
+    document.getElementById("b6").className = "uav bb"
   }
-  if (game.upgrades.u2) {
-    document.getElementById("u2").className = "ub ubo"
-    game.per10 = N(1.55)
+  var aag = 0
+  while (aag < 15) {
+    if (game.upgrades["u"+(aag+1)]) {
+      document.getElementById("u"+(aag+1)).className = "ub ubo"
+    }
+    aag++
   }
-  if (game.upgrades.u3) {
-    document.getElementById("u3").className = "ub ubo"
-    autobuyt1()
+  /*mg1: starts at the 2150th mg1; new scaling: x1.4 each time
+  mg2: starts at the 1600th mg1; new scaling: x1.7 each time
+  mg3: starts at the 930th mg3; new scaling: x1.9 each time
+  mg4: starts at the 260th mg4; new scaling: x1.55 each time
+  mg5: starts at the 1300th mg5; new scaling: x1.6 each time
+  mg6: starts at the 970th mg6; new scaling: x1.7 each time*/
+  if (game.mg1b.gt(2150)) {
+    document.getElementById("mg1sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg1sc").textContent = ""
   }
-  if (game.upgrades.u4) {
-    document.getElementById("u4").className = "ub ubo"
+  if (game.mg2b.gt(1600)) {
+    document.getElementById("mg2sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg2sc").textContent = ""
   }
-  if (game.upgrades.u5) {
-    document.getElementById("u5").className = "ub ubo"
+  if (game.mg3b.gt(930)) {
+    document.getElementById("mg3sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg3sc").textContent = ""
+  }
+  if (game.mg4b.gt(260)) {
+    document.getElementById("mg4sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg4sc").textContent = ""
+  }
+  if (game.mg5b.gt(1300)) {
+    document.getElementById("mg5sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg5sc").textContent = ""
+  }
+  if (game.mg6b.gt(970)) {
+    document.getElementById("mg6sc").textContent = "Scaled "
+  } else {
+    document.getElementById("mg6sc").textContent = ""
   }
   if (game.atoms.gte(1) && !game.upgrades.u1) {
     document.getElementById("u1").className = "ub av"
@@ -2088,19 +2418,213 @@ function update() {
   } else if (!game.upgrades.u5) {
     document.getElementById("u5").className = "ub uav"
   }
+  if (game.atoms.gte(10) && !game.upgrades.u6) {
+    document.getElementById("u6").className = "ub av"
+  } else if (!game.upgrades.u6) {
+    document.getElementById("u6").className = "ub uav"
+  }
+  if (game.atoms.gte(15) && !game.upgrades.u7) {
+    document.getElementById("u7").className = "ub av"
+  } else if (!game.upgrades.u7) {
+    document.getElementById("u7").className = "ub uav"
+  }
+  if (game.atoms.gte(20) && !game.upgrades.u8) {
+    document.getElementById("u8").className = "ub av"
+  } else if (!game.upgrades.u8) {
+    document.getElementById("u8").className = "ub uav"
+  }
+  if (game.atoms.gte(35) && !game.upgrades.u9) {
+    document.getElementById("u9").className = "ub av"
+  } else if (!game.upgrades.u9) {
+    document.getElementById("u9").className = "ub uav"
+  }
+  if (game.atoms.gte(50) && !game.upgrades.u10 && game.upgradesbought.gte(9)) {
+    document.getElementById("u10").className = "ub av"
+  } else if (!game.upgrades.u10) {
+    document.getElementById("u10").className = "ub uav"
+  }
+  if (game.atoms.gte(10e3) && !game.upgrades.u11) {
+    document.getElementById("u11").className = "ub av"
+  } else if (!game.upgrades.u11) {
+    document.getElementById("u11").className = "ub uav"
+  }
+  if (game.atoms.gte(35e3) && !game.upgrades.u12) {
+    document.getElementById("u12").className = "ub av"
+  } else if (!game.upgrades.u12) {
+    document.getElementById("u12").className = "ub uav"
+  }
+  if (game.atoms.gte(100e3) && !game.upgrades.u13) {
+    document.getElementById("u13").className = "ub av"
+  } else if (!game.upgrades.u13) {
+    document.getElementById("u13").className = "ub uav"
+  }
+  if (game.atoms.gte(250e3) && !game.upgrades.u14) {
+    document.getElementById("u14").className = "ub av"
+  } else if (!game.upgrades.u14) {
+    document.getElementById("u14").className = "ub uav"
+  }
+  if (game.atoms.gte(1e7) && !game.upgrades.u15 && game.upgradesbought.gte(14)) {
+    document.getElementById("u15").className = "ub av"
+  } else if (!game.upgrades.u15) {
+    document.getElementById("u15").className = "ub uav"
+  }
+  var aab = 0
+  while (aab < game.auto.tiers.length) {
+    if (game.auto.tiers[aab] === 3) {
+      document.getElementById(aab+1+"t").textContent = "Tier 3"
+      document.getElementById(aab+1+"t").className = "bb ubo b"
+    } else {
+      document.getElementById((aab+1)+"t").textContent = "Tier: " + game.auto.tiers[aab] + "; Increase for " + fix(autocost(aab+1)) + " atoms"
+      if (game.atoms.gte(autocost(aab+1))) {
+        document.getElementById(aab+1+"t").className = "bb av b"
+      } else {
+        document.getElementById(aab+1+"t").className = "bb uav b"
+      }
+    }
+    aab++
+  }
   unlock()
+  document.getElementById("a7t").textContent = game.auto.mftype
   document.getElementById("mg2").hidden = !game.mg2u
   document.getElementById("mg3").hidden = !game.mg3u
   document.getElementById("mg4").hidden = !game.mg4u
   document.getElementById("mfb").hidden = !game.mfu
   document.getElementById("mfw").hidden = !game.settings.mfwu
   document.getElementById("mg5").hidden = !game.mg5u
+  document.getElementById("mg6").hidden = !game.mg6u
+  document.getElementById("a16").setAttribute("tooltip","Mega-matter \n Reach " + fix(N(1e6)) + " matter.")
+  document.getElementById("a19").setAttribute("tooltip","Thank you for listening to my suggestion \n Reach " + fix(N(1e20)) + " matter.")
+  document.getElementById("a22").setAttribute("tooltip","Inflation \n Reach " + fix(N(1e55)) + " matter.")
+  document.getElementById("a30").setAttribute("tooltip","Hyperinflation \n Reach " + fix(N(1e150)) + " matter.")
+  document.getElementById("a32").setAttribute("tooltip","That's a lot of atoms! \n Reach " + fix(N(1e4)) + " atoms in a Matter Fusion.")
+  document.getElementById("a34").setAttribute("tooltip","Stockpile \n Have " + fix(N(1e7)) + " atoms at once.")
+  document.getElementById("a35").setAttribute("tooltip","Stop. \n Reach " + fix(N(1e4)) + " Matter Fusions.")
+  document.getElementById("a39").setAttribute("tooltip","Infinity? \n Reach " + fix(N(2).pow(1024)) + " matter")
+  autobuy()
+  var aaf = 0
+  while (aaf < 4) {
+    if (game.chal["c"+(aaf+1)]) {
+    document.getElementById("sc"+(aaf+1)).textContent = "Completed"
+    document.getElementById("sc"+(aaf+1)).className = "cc"
+  }
+  aaf++
+  }
 }
-function autobuyt1() {
-  document.getElementById("b1").click()
-  document.getElementById("b2").click()
-  document.getElementById("b3").click()
-  document.getElementById("b4").click()
+function cc(a) {
+  switch (a) {
+    case 1:
+      if (game.matter.gte(1e43)) {
+        game.chalin = 0
+        game.chal.c1 = true
+        game.auto.tiers[4] = 1
+      } else {
+        game.chalin = 0
+      }
+    break;
+    case 2:
+      if (game.matter.gte(1e28)) {
+        game.chalin = 0
+        game.chal.c2 = true
+        game.auto.tiers[5] = 1       
+      } else {
+        game.chalin = 0
+      }
+    case 3:
+      if (game.matter.gte(1e65)) {
+        game.chalin = 0
+        game.chal.c3 = true
+        game.auto.tiers[6] = 1
+      } else {
+        game.chalin = 0        
+      }
+    break;
+    case 4:
+      if (game.matter.gte(1e75)) {
+        game.chalin = 0
+        game.chal.c4 = true     
+      } else {
+        game.chalin = 0        
+      }
+  }
+  mfr(2)
+}
+function autocost(ID) {
+  switch (ID) {
+    case 1:
+    case 2:
+      return N(100).mul(N(200).pow(game.auto.tiers[ID-1]-1))
+    break;
+    case 3:
+    case 4:
+      return N(250).mul(N(200).pow(game.auto.tiers[ID-1]-1))
+    break;
+    case 5:
+    case 6:
+      return N(400).mul(N(200).pow(game.auto.tiers[ID-1]-1))
+    break;
+    case 7:
+      return N(200).mul(N(400).pow(game.auto.tiers[ID-1]-1))
+    break;
+  }
+}
+function autobuy() {
+  var aal = document.getElementById("a7ta").value
+    switch (game.auto.mftype) {
+      case "amount":
+        if (getAOR().gte(N(aal)) && game.mfu) {
+          mfr()
+        }
+      break;
+      case "time":
+        if (game.timf.gte(N(aal).mul(20)) && game.mfu) {
+          mfr()
+        }
+      break;
+    }
+  if (!game.upgrades.u10 && game.upgrades.u3) {
+    document.getElementById("b1").click()
+    document.getElementById("b2").click()
+    document.getElementById("b3").click()
+    document.getElementById("b4").click()
+  } else if (game.upgrades.u10) {
+    var aua = 0
+    while (aua <= game.auto.tiers.length) {
+      if (game.auto.tiers[aua] === 1 && game.auto.active[aua] && aua < 7) {
+        repeatfunction(buyMG,aua+1,1)
+      } else if (game.auto.tiers[aua] === 2 && game.auto.active[aua] && aua < 7) {
+        repeatfunction(buyMG,aua+1,10)
+      } else if (game.auto.tiers[aua] === 3 && game.auto.active[aua] && aua < 7) {
+        repeatfunction(buyMG,aua+1,100)
+      }
+      aua++
+    }
+  }
+}
+document.getElementById("acb1").checked = game.auto.active[0]
+document.getElementById("acb2").checked = game.auto.active[1]
+document.getElementById("acb3").checked = game.auto.active[2]
+document.getElementById("acb4").checked = game.auto.active[3]
+document.getElementById("acb5").checked = game.auto.active[4]
+document.getElementById("acb6").checked = game.auto.active[5]
+document.getElementById("acb7").checked = game.auto.active[6]
+function upTier(ID) {
+  if (game.atoms.gte(autocost(ID)) && game.auto.tiers[ID-1] !== 3) {
+    game.atoms = game.atoms.sub(autocost(ID))
+    game.auto.tiers[ID-1]++
+  }
+}
+function mfachange() {
+  switch (game.auto.mftype) {
+    case "amount":
+      game.auto.mftype = "time"
+    break;
+    case "time":
+      game.auto.mftype = "amount"
+    break;
+  }
+}
+function changeauto(type) {
+  game.auto.active[type-1] = !game.auto.active[type-1]
 }
 function unlock() {
   if (!game.mg2u) {
@@ -2113,12 +2637,15 @@ function unlock() {
     game.mg4u = game.mg3a.gte(3)
   }
   if (!game.mg5u && game.upgrades.u4 && game.mg4a.gte(2)) {
-    game.mg5u = game.mg4a.gte(2)
+    game.mg5u =  true
+  }
+  if (!game.mg6u && game.upgrades.u8 && game.matter.gt(1e55)) {
+    game.mg6u = true
   }
   if (game.mft.lt(1)) {
-    game.mfu = game.matter.gte(1e12)
+    game.mfu = game.matter.gte(1e12) && !game.chalin
   } else if (game.matter.gte(1e12)) {
-    game.mfu = true
+    game.mfu = true && !game.chalin
   }
   if (game.mft.gte(1)) {
     document.getElementById("mftb").hidden = false
@@ -2126,7 +2653,15 @@ function unlock() {
   if (!game.settings.mfwu) {
     game.settings.mfwu = game.mfu
   }
+  if (game.upgrades.u5) {
+    document.getElementById("r2").hidden = false
+  }
+  document.getElementById("ab5").hidden = !game.chal.c1
+  document.getElementById("ab6").hidden = !game.chal.c2
+  document.getElementById("ab7").hidden = !game.chal.c3
+  document.getElementById("r3").hidden = !game.chal.c4
 }
+var uin
 function mfwarning() {
   if (game.settings.mfw) {
     document.getElementById("mfw").textContent = "Turn on Matter Fusion warning"
@@ -2135,61 +2670,73 @@ function mfwarning() {
   }
   game.settings.mfw = !game.settings.mfw
 }
-var test2 = setInterval(update,50)
+if (game.chalin === 1) {
+  uin = setInterval(update,250)
+} else {
+  uin = setInterval(update,50)
+}
 function buyMG(type) {
-  switch(type) {
-     case 1:
-       if (game.matter.gte(game.mg1c)) {
-         game.mg1a = game.mg1a.add(1)
-         game.mg1b = game.mg1b.add(1)
-         game.matter = game.matter.sub(game.mg1c)
-         if (game.mg1b.lt(50)) {
-           game.mg1c = game.mg1c.add(3)
-         } else {
-           game.mg1c = game.mg1c.mul(1.2)
-         }
-       }
-       break;
-       case 2:
-       if (game.matter.gte(game.mg2c)) {
-         game.mg2a = game.mg2a.add(1)
-         game.mg2b = game.mg2b.add(1)
-         game.matter = game.matter.sub(game.mg2c)
-         if (game.mg2b.lt(45)) {
-           game.mg2c = game.mg2c.add(150)
-         } else {
-           game.mg2c = game.mg2c.mul(1.3)
-         }
-       }
-       break;
-       case 3:
-       if (game.matter.gte(game.mg3c)) {
-         game.mg3a = game.mg3a.add(1)
-         game.mg3b = game.mg3b.add(1)
-         game.matter = game.matter.sub(game.mg3c)
-         game.mg3c = game.mg3c.mul(1.5)
-       }
-       break;
-       case 4:
-       if (game.mg1a.gte(game.mg4c)) {
-         game.mg4a = game.mg4a.add(1)
-         game.mg4b = game.mg4b.add(1)
-         game.mg1a = game.mg1a.sub(game.mg4c)
-         if (game.mg4b.lt(14)) {
-           game.mg4c = game.mg4c.add(70)
-         } else {
-           game.mg4c = game.mg4c.mul(1.25)
-         }
-       }
-       break;
-       case 5:
-       if (game.matter.gte(game.mg5c)) {
-         game.mg5a = game.mg5a.add(1)
-         game.mg5b = game.mg5b.add(1)
-         game.matter = game.matter.sub(game.mg5c)
-         game.mg5c = game.mg5c.mul(1.28)
-       }
-       break;
+  if (type === 4) {
+    if (game.mg1a.gte(game.mg4c)) {
+      game.mg4a = game.mg4a.add(1)
+      game.mg4b = game.mg4b.add(1)
+      game.mg1a = game.mg1a.sub(game.mg4c)
+      game.mg4c = game.mg4c.mul(1.5)
+    }
+  } else if (game.matter.gte(game["mg"+type+"c"])) {
+    game["mg"+type+"a"] = game["mg"+type+"a"].add(1)
+    game["mg"+type+"b"] = game["mg"+type+"b"].add(1)
+    game.matter = game.matter.sub(game["mg"+type+"c"])
+    switch (type) {
+      case 1:
+        if (game.mg1b.lt(50)) {
+          game.mg1c = game.mg1c.add(3)
+        } else if (game.mg1b.gt(2250)) {
+          game.mg1c = game.mg1c.mul(1.6)
+        } else {
+          game.mg1c = game.mg1c.mul(1.2)
+        }
+        break;
+      case 2:
+        if (game.mg2b.lt(45)) {
+          game.mg2c = game.mg2c.add(150)
+        } else if (game.mg2b.gt(1600)) {
+          game.mg2c = game.mg2c.mul(1.9)
+        } else {
+          game.mg2c = game.mg2c.mul(1.3)
+        }
+        break;
+      case 4:
+        if (game.mg4b.lt(14)) {
+          game.mg4c = game.mg4c.add(70)
+        } else if (game.mg2b.gt(1700)) {
+          game.mg4c = game.mg2c.mul(1.75)
+        } else {
+          game.mg4c = game.mg2c.mul(1.25)
+        }
+        break;
+      case 5:
+        if (game.mg5b.gt(1300)) {
+          game.mg5c = game.mg5c.mul(1.8)
+        } else {
+          game.mg5c = game.mg5c.mul(1.28)
+        }
+      break;
+      case 6:
+        if (game.mg6b.gt(970)) {
+          game.mg6c = game.mg6c.mul(1.9)
+        } else {
+          game.mg6c = game.mg6c.mul(1.32)
+        }
+      break;
+      case 3:
+        if (game.mg3b.gt(930)) {
+          game.mg3c = game.mg3c.mul(2.1)
+        } else {
+          game.mg3c = game.mg3c.mul(1.5)
+        }
+      break;
+    }
   }
 }
 function isport() {
@@ -2281,5 +2828,121 @@ function buyu(a) {
         game.upgradesbought = game.upgradesbought.add(1)
       }
       break;
+    case 6:
+      if (game.atoms.gte(10) && !game.upgrades.u6) {
+        game.upgrades.u6 = true
+        game.atoms = game.atoms.sub(10)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+      break;
+    case 7:
+      if (game.atoms.gte(15) && !game.upgrades.u7) {
+        game.upgrades.u7 = true
+        game.atoms = game.atoms.sub(15)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+      break;
+    case 8:
+      if (game.atoms.gte(20) && !game.upgrades.u8) {
+        game.upgrades.u8 = true
+        game.atoms = game.atoms.sub(20)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+      break;
+    case 9:
+      if (game.atoms.gte(35) && !game.upgrades.u9) {
+        game.upgrades.u9 = true
+        game.atoms = game.atoms.sub(35)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+      break;
+    case 10:
+      if (game.atoms.gte(50) && !game.upgrades.u10 && game.upgradesbought.gte(9)) {
+        game.upgrades.u10 = true
+        game.atoms = game.atoms.sub(50)
+        game.upgradesbought = game.upgradesbought.add(1)
+        game.auto.tiers[0] = 1
+        game.auto.tiers[1] = 1
+        game.auto.tiers[2] = 1
+        game.auto.tiers[3] = 1
+      }
+      break;
+    case 11:
+      if (game.atoms.gte(1e4) && !game.upgrades.u11) {
+        game.upgrades.u11 = true
+        game.atoms = game.atoms.sub(1e4)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+    break;
+    case 12:
+      if (game.atoms.gte(3.5e4) && !game.upgrades.u12) {
+        game.upgrades.u12 = true
+        game.atoms = game.atoms.sub(3.5e4)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+    break;
+    case 13:
+      if (game.atoms.gte(1e5) && !game.upgrades.u13) {
+        game.upgrades.u13 = true
+        game.atoms = game.atoms.sub(1e5)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+    break;
+    case 14:
+      if (game.atoms.gte(2.5e5) && !game.upgrades.u14) {
+        game.upgrades.u14 = true
+        game.atoms = game.atoms.sub(2.5e5)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+    break;
+    case 15:
+      if (game.atoms.gte(1e7) && !game.upgrades.u15 && game.upgradesbought.gte(14)) {
+        game.upgrades.u15 = true
+        game.atoms = game.atoms.sub(1e7)
+        game.upgradesbought = game.upgradesbought.add(1)
+      }
+    break;
   }
+}
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+function changeFav(newHref) {
+  document.head.childNodes[9].href = newHref
+}
+var f = 0
+function animation() {
+if (f < 10) {
+  f++
+} else {
+  f = 1
+}
+  var frame = "f" + f + ".png"
+  changeFav(frame)
+}
+function customfav() {
+  if (Math.random() < 0.01) {
+    var a = Math.random()
+    if (inRange(Math.random(),0.23,0.46)) {
+      changeFav("jh.png")
+    } else if (inRange(Math.random(),0.46,0.69)) {
+      changeFav("marker.png")
+    } else if (inRange(Math.random(),0.69,0.92)) {
+      changeFav("code.png")
+    } else if (inRange(Math.random(),0,0.23)) {
+      changeFav("rainbow.png")
+    } else if (inRange(Math.random(),0.92,1)) {
+      setInterval(animation,1000)
+    }
+  }
+}
+customfav()
+function inRange(a,b,c) {
+  return a>b && a<=c
 }
