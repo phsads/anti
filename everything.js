@@ -2202,8 +2202,8 @@ function getAchivements() {
   if(game.mg4u)game.acv[15]=true
   if(game.matter.gte(1e6))game.acv[16]=true
   if(game.mg3b.gte(14))game.acv[17]=true
-  if(game.mg2b.gte(10))game.acv[18]=true
-  if(game.atoms.gte(1))game.acv[19]=true
+  if(game.atoms.gte(1))game.acv[18]=true
+  if(game.matter.gte(1e20))game.acv[19]=true
   if(game.upgrades.u3)game.acv[20]=true
   if(game.mg5b.gte(1))game.acv[21]=true
   if(game.matter.gte(1e55))game.acv[22]=true
