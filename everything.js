@@ -2574,12 +2574,12 @@ function autobuy() {
   var aal = document.getElementById("a7ta").value
     switch (game.auto.mftype) {
       case "amount":
-        if (getAOR().gte(N(aal)) && game.mfu) {
+        if (getAOR().gte(N(aal)) && game.mfu && game.auto.active[6]) {
           mfr()
         }
       break;
       case "time":
-        if (game.timf.gte(N(aal).mul(20)) && game.mfu) {
+        if (game.timf.gte(N(aal).mul(20)) && game.mfu && game.auto.active[6]) {
           mfr()
         }
       break;
