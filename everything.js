@@ -2226,6 +2226,8 @@ function getAchivements() {
   if(game.matter.gte(N(2).pow(1024)))game.acv[39]=true
 }
 function update() {
+  document.getElementById("ctb").hidden = !game.upgrades.u10
+  document.getElementById("attb").hidden = !game.upgrades.u10
   if (game.chalin === 4) {
     var aae = N(1500).div(game.timf.add(1500))
   } else {
