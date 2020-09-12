@@ -2177,7 +2177,7 @@ function gum(a) {
     case 12:
       return game.matter.pow(0.12)
     case 14:
-      return N(document.getElementsByClassName("acvc").length/7).mul(boolvert(game.upgrades.u14))
+      return (N(document.getElementsByClassName("acvc").length/7).mul(boolvert(game.upgrades.u14))).add(1)
   }
 }
 function changepower() {
