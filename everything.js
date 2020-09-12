@@ -2228,6 +2228,7 @@ function getAchivements() {
 function update() {
   document.getElementById("ctb").hidden = !game.upgrades.u10
   document.getElementById("attb").hidden = !game.upgrades.u10
+  document.getElementById("mfcustom").hidden = !game.chal.c3
   if (game.chalin === 4) {
     var aae = N(1500).div(game.timf.add(1500))
   } else {
