@@ -4,17 +4,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matter Creator</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="icon" href="favicon.png" type="img" sizes="16x16">
 </head>
 <body id="body">
     <div>
       <button class="simpbutt" onclick="gTT(1)">Matter Generators</button>
       <button class="simpbutt" onclick="gTT(2)" id="mftb" hidden="true">Matter Fusion</button>
+      <button class="simpbutt" onclick="gTT(6)" id="acv">Achivements</button>
+      <button class="simpbutt" onclick="gTT(4)" id="ctb">Challenges</button>
+      <button class="simpbutt" onclick="gTT(5)" id="attb">Automation</button>
       <button class="simpbutt" onclick="gTT(3)">Settings</button>
     </div>
     <div id="mgs">
     <p id="mat" style="font-size:40px; text-align:center">You have <span id="man" class="man">10</span> matter.</p>
     <hr>
-    <button class="mf" id="mfb" onclick="mf()">Matter Fusion</button>
+    <button class="mf" id="mfb" onclick="mf()"><span style="font-size:20px">Matter Fusion</span> <br> <span id="aomf" class="mfspan">0</span> <br> <span id="apm" class="mfspan">a</span> <br> Peak: <span id="patm" class="mfspan"></span> atoms / minute</button>
+    <button id="cc" class="mf" onclick="cc(game.chalin)">Progress to complete the challenge: <span id="chalp">100%</span><br> <span id="chalc">Complete the challenge</span></button>
     <br>
     <br>
     <br>
@@ -23,21 +28,21 @@
         <tr>
           <td>
       <ul>
-        <li>Matter Generator 1</li>
+        <li><span id="mg1sc"></span>Matter Generator 1</li>
         <li id="mg1a">Amount: something</li>
         <li id="mg1p">Production: # matter / sec</li>
         <li>
-          <button onclick="buyMG(1)" class="bb" id="b1">Buy one for 10 matter</button>
+          <button onclick="buyMG(1)" class="bb" id="b1">Buy one for <span id="bc1">10</span> matter</button>
         </li>
       </ul>
     </td>
     <td id="mg2">
       <ul>
-        <li>Matter Generator 2</li>
+        <li><span id="mg2sc"></span>Matter Generator 2</li>
         <li id="mg2a">Amount: #</li>
         <li id="mg2p">Production: # mg1 / sec <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # matter / sec</li>
         <li>
-          <button onclick="buyMG(2)" class="bb" id="b2">Buy one for 500 matter</button>
+          <button onclick="buyMG(2)" class="bb" id="b2">Buy one for <span id="bc2">500</span> matter</button>
         </li>
       </ul> 
       </td>
@@ -45,21 +50,21 @@
       <tr>
           <td id="mg3">
       <ul>
-        <li>Matter Generator 3</li>
+        <li><span id="mg3sc"></span>Matter Generator 3</li>
         <li id="mg3a">Amount: something</li>
         <li id="mg3p">Production: # matter / sec</li>
         <li>
-          <button onclick="buyMG(3)" class="bb" id="b3">Buy one for 25000 matter</button>
+          <button onclick="buyMG(3)" class="bb" id="b3">Buy one for <span id="bc3">25000</span> matter</button>
         </li>
       </ul>
     </td>
     <td id="mg4">
       <ul>
-        <li>Matter Generator 4</li>
-        <li id="mg4a">Amount: big big chungus</li>
-        <li id="mg4p">Production: big chungus mg2 / sec</li>
+        <li><span id="mg4sc"></span>Matter Generator 4</li>
+        <li id="mg4a">Amount: #</li>
+        <li id="mg4p">Production: # mg2 / sec</li>
         <li>
-          <button onclick="buyMG(4)" class="bb" id="b4">Buy one for 200 mg1</button>
+          <button onclick="buyMG(4)" class="bb" id="b4">Buy one for <span id="bc4">200</span> mg1</button>
         </li>
       </ul>
       </td>
@@ -67,11 +72,21 @@
     <tr>
       <td id="mg5">
         <ul>
-        <li>Matter Generator 5</li>
+        <li><span id="mg5sc"></span>Matter Generator 5</li>
         <li id="mg5a">Amount: #</li>
         <li id="mg5p">Production: # matter / sec <br> Production: 0.001x mg1 + mg3 power / sec</li>
         <li>
-        <button onclick="buyMG(5)" class="bb" id="b5">Buy one for 1e13 matter</button>
+        <button onclick="buyMG(5)" class="bb" id="b5">Buy one for <span id="bc5">1e13</span> matter</button>
+        </li>
+      </ul>
+      </td>
+      <td id="mg6">
+        <ul>
+        <li><span id="mg6sc"></span>Matter Generator 6</li>
+        <li id="mg6a">Amount: #</li>
+        <li id="mg6p">Production: # mg3 / sec </li>
+        <li>
+        <button onclick="buyMG(6)" class="bb" id="b6">Buy one for <span id="bc6">50</span> matter</button>
         </li>
       </ul>
       </td>
@@ -85,19 +100,163 @@
       <table style="margin: 0 auto; border-spacing:0; padding:0; border-width:0">
         <tr>
           <td>
-            <button id="u1" class="ub uav" onclick="buyu(1)">Multiply mg3's power by the amount of mg1,mg2 and m4 bought this Matter Fusion (#x) <br> Cost: 1 big chungus</button>
+            <button id="u1" class="ub uav" onclick="buyu(1)">Multiply mg3's power by the amount of mg1,mg2 and mg4 bought this Matter Fusion <span id="u1e" class="smallspan">(#x)</span> <br> Cost: 1 matter</button>
           </td>
           <td>
             <button id="u2" class="ub uav" onclick="buyu(2)">Increase the per10 multipiler by 0.05 (x1.5 -> x1.55) <br> Cost: 2 atoms</button>
           </td>
           <td>
-            <button id="u3" class="ub uav" onclick="buyu(3)">Autobuys mg1-4 <br> Cost: 4 atoms</button>
+            <button id="u3" class="ub uav" onclick="buyu(3)">Autobuys mg1-4 <br> Cost: 4 atoms <br> </button>
           </td>
           <td>
             <button id="u4" class="ub uav" onclick="buyu(4)">Unlocks mg5 <br> Cost: 6 atoms</button>
           </td>
           <td>
             <button id="u5" class="ub uav" onclick="buyu(5)">Start with 1e7 matter and unlocks the 2nd row <br> Cost: 3 atoms <br> Requirement: 4 upgrades</button>
+          </td>
+        </tr>
+        <tr id="r2" hidden="true">
+          <td>
+            <button id="u6" class="ub uav" onclick="buyu(6)">Multiply mg's power by the amount of Matter Fusion and Atoms <span id="u6e" class="smallspan">(#x)</span> <br> Cost: 10 atoms</button>
+          </td>
+          <td>
+            <button id="u7" class="ub uav" onclick="buyu(7)">Improve the atom gain formula<br> Cost: 15 atoms</button>
+          </td>
+          <td>
+            <button id="u8" class="ub uav" onclick="buyu(8)">Unlocks mg6 <br> Cost: 20 atoms</button>
+          </td>
+          <td>
+            <button id="u9" class="ub uav" onclick="buyu(9)">Gain more atoms based on the number of Matter Fusions <span id="u9e" class="smallspan">(#x)</span><br> Cost: 35 atoms</button>
+          </td>
+          <td>
+            <button id="u10" class="ub uav" onclick="buyu(10)">Unlocks the automation tab and challenges <br> Cost: 50 atoms <br> Requirement: 9 upgrades</button>
+          </td>
+        </tr>
+        <tr id="r3" hidden="true">
+          <td>
+            <button id="u11" class="ub uav" onclick="buyu(11)">u1's formula is weakened but it's based on the amount of mg1,2,4,5,6 you have <br> Cost: <span id="u11c" class="smallspan"></span> atoms</button>
+          </td>
+          <td>
+            <button id="u12" class="ub uav" onclick="buyu(12)">Start with more matter based on the matter in the previous Matter Fusion (<span id="u12e" class="smallspan">a</span> matter)<br> Cost: <span id="u12c" class="smallspan">1111</span> atoms</button>
+          </td>
+          <td>
+            <button id="u13" class="ub uav" onclick="buyu(13)">per10 is increased even further (x1.55 -> x2.1) <br> Cost: <span id="u13c" class="smallspan"></span> atoms</button>
+          </td>
+          <td>
+            <button id="u14" class="ub uav" onclick="buyu(14)">u9's boost is increased by the amount of achivements completed (^<span id="u14e" class="smallspan"></span>)<br> Cost: <span id="u14c" class="smallspan"></span> atoms</button>
+          </td>
+          <td>
+            <button id="u15" class="ub uav" onclick="buyu(15)">u7's formula is better <br> Cost: <span id="u15c" class="smallspan"></span> atoms <br> Requirement: 14 upgrades</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="challenges" hidden=true>
+      <br>
+      <table>
+        <tr>
+          <td>
+          <div id="ch1" class="chal">
+            Challenge 1: Ticks simulate 5x slower (every 0.25 seconds instead of the usual 0.05s) <br> Goal: <span id="c1g">1e12123</span> matter <br> <button id="sc1" class="simpbutt" onclick="startchal(1)">Start</button> <br> Reward: MG5 Autobuyer
+          </div>
+          </td>
+          <td>
+          <div id="ch2" class="chal">
+            Challenge 2: per10 will simulate every 20 bought instead <br> Goal: <span id="c2g">1e12123</span> matter <br> <button id="sc2" class="simpbutt"  onclick="startchal(2)">Start</button> <br> Reward: MG6 Autobuyer
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <div id="ch1" class="chal">
+            Challenge 3: Your matter multiplies by x0.95 every tick <br> Goal: <span id="c3g">1e12123</span> matter <br> <button id="sc3" class="simpbutt"  onclick="startchal(3)">Start</button> <br> Reward: MF Autobuyer
+          </div>
+          </td>
+          <td>
+          <div id="ch2" class="chal">
+            Challenge 4: Everything's production will be raised to the power of 1, but that decreases every tick <br> Goal: <span id="c4g">1e12123</span> matter <br> <button id="sc4" class="simpbutt"  onclick="startchal(4)">Start</button> <br> Reward: Row 3 of upgrades
+          </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="auto" hidden=true>
+      <br>
+      <button class="simpbutt" onclick="mfachange()">Matter Fusion autobuyer type: <span id="a7t">L</span></button>
+      <textarea rows="1" cols="14" style="position:relative;top:8px;" id="a7ta"></textarea>
+      <table style="border-spacing: 10px;">
+        <tr>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab1">
+            <b style="font-size:30px">MG1 Autobuyer</b> <br>
+            <button onclick="upTier(1)" class="simpbutt" id="1t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(1)" id="acb1">
+            </div>
+          </td>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab2">
+            <b style="font-size:30px">MG2 Autobuyer</b> <br>
+            <button onclick="upTier(2)" class="simpbutt" id="2t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(2)" id="acb2">
+            </div>
+          </td>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab3">
+            <b style="font-size:30px">MG3 Autobuyer</b> <br>
+            <button onclick="upTier(3)" class="simpbutt" id="3t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(3)" id="acb3">
+            </div>
+          </td>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab4">
+            <b style="font-size:30px">MG4 Autobuyer</b> <br>
+            <button onclick="upTier(4)" class="simpbutt" id="4t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(4)" id="acb4">
+            </div>
+          </td>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab5"> 
+            <b style="font-size:30px">MG5 Autobuyer</b> <br>
+            <button onclick="upTier(5)" class="simpbutt" id="5t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1; Increase for 200 atoms
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(5)" id="acb5"> 
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab6">
+            <b style="font-size:30px">MG6 Autobuyer</b> <br>
+            <button onclick="upTier(6)" class="simpbutt" id="6t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(6)" id="acb6">
+            </div>
+          </td>
+          <td style="border: 1px solid black; border-radius: 3px;" id="ab7">
+            <b style="font-size:25px">Matter Fusion Autobuyer</b> <br>
+            <button onclick="upTier(7)" class="simpbutt" id="7t" style="display:block;margin-left: auto;margin-right: auto; font-size:11px">
+              Tier: 1
+            </button>
+            <div>
+            <span>Is active:</span>
+            <input type="checkbox" onchange="changeauto(7)" id="acb7">
+            </div>
           </td>
         </tr>
       </table>
@@ -111,6 +270,78 @@
       <button class="simpbutt" onclick="swapunr()">Turn on/off unstable rainbow background</button>
       <button class="simpbutt" onclick="mfwarning()" id="mfw" hidden="true">Turn off Matter Fusion warning</button> <br>
       <button class="simpbutt" onclick="changenotation()" id="notationbutton">Notation: Scientific</button>
+    </div>
+    <div id="achivements" hidden=true>
+      <br>
+      <br>
+      <table style="border-spacing: 10px;margin-left: auto;margin-right: auto;">
+        <tr>
+          <td id="a10" tooltip="Gotta start somewhere
+Get 1 mg1." class="acv">10</td>
+          <td id="a11" tooltip="That's a weird scaling
+Get 40 mg1." class="acv">11</td> 
+          <td id="a12" tooltip="Polyminal growth
+Get 1 mg2." class="acv">12</td>
+          <td id="a13" tooltip="Wait, it's all addition?
+Get 10 mg2." class="acv">13</td> 
+          <td id="a14" tooltip="A 3rd one!
+Unlock mg3." class="acv">14</td>
+          <td id="a15" tooltip="When will they stop coming?
+Unlock mg4." class="acv">15</td> 
+          <td id="a16" tooltip="Mega-matter
+Get a bunch of matter" class="acv">16</td>
+          <td id="a17" tooltip="Buff mg3 plssss
+Get 14 mg3." class="acv">17</td>
+          <td id="a18" tooltip="Enjoy the early game again
+Get at least 1 atom." class="acv">18</td>
+          <td id="a19" tooltip="Thank you for listening to my suggestion
+Get 1e20 matter." class="acv">19</td>
+        </tr>
+        <tr>
+          <td id="a20" tooltip="No more Enter holding
+Get u3." class="acv">20</td>
+          <td id="a21" tooltip="They came back
+Get 1 mg5." class="acv">21</td> 
+          <td id="a22" tooltip="Inflation
+Get 1e55 matter." class="acv">22</td>
+          <td id="a23" tooltip="Time to left click
+Get u6." class="acv">23</td> 
+          <td id="a24" tooltip="Another one
+Unlock mg6." class="acv">24</td>
+          <td id="a25" tooltip="You're getting somewhere
+Have 100 atoms at once." class="acv">25</td> 
+          <td id="a26" tooltip="Improved automation!
+Get u10." class="acv">26</td>
+          <td id="a27" tooltip="Not challenging
+Complete the 2 first challenges." class="acv">27</td>
+          <td id="a28" tooltip="This is hard
+Complete challenge 4." class="acv">28</td>
+          <td id="a29" tooltip="Bulk
+Get tier 2 on every autobuyer." class="acv">29</td>
+        </tr>
+        <tr>
+          <td id="a30" tooltip="Hyperinflation
+Get 1e150 matter." class="acv">30</td>
+          <td id="a31" tooltip="Distance Incremental ripoff
+Get scaling on at least 1 mg." class="acv">31</td> 
+          <td id="a32" tooltip="That's a lot of atoms
+Get 1e4 atoms in one Matter Fusion." class="acv">32</td>
+          <td id="a33" tooltip="Speedy automation
+Get tier 3 on every autobuyer" class="acv">33</td> 
+          <td id="a34" tooltip="Stockpile 
+Have 1e7 atoms at once" class="acv">34</td>
+          <td id="a35" tooltip="Stop.
+Get 10000 matter fusions." class="acv">35</td>
+          <td id="a36" tooltip="Out of the way
+Get 315 mg1 with only mg1s." class="acv">36</td>
+          <td id="a37" tooltip="Achivements are useful now, are you happy?
+Get u14." class="acv">37</td>
+          <td id="a38" tooltip="A new era.
+Get u15." class="acv">38</td> 
+          <td id="a39" tooltip="Infinity?
+Reach 1.79e308 matter." class="acv">39</td> 
+        </tr>
+      </table>
     </div>
 </body>
 <script src="everything.js"></script>
