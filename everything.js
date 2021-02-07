@@ -1991,6 +1991,9 @@ let m = JSON.stringify(game)
 localStorage.setItem("save",m)
 }
 function load(sv) {
+  if (sv === "aGZramlHb2liZ2FuakJHbkJHQUhKa0JIRFlIbWN2ZmJ2a2pCNzRibjh0TzlWR045Njc0bWhuag=") {
+    alert("https://imgur.com/a/tdXR25y")	 
+  }
   let s = sv || localStorage.getItem("save")
   if (s != null && s != "undefined") {
     s = JSON.parse(s)
